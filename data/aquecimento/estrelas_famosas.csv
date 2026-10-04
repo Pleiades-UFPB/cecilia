@@ -1,0 +1,15 @@
+# Tabela de aquecimento (Fase 01, plano 01-02): 10 estrelas famosas, digitadas à mão.
+# Valores conferidos no SIMBAD em 2026-10-04 (V, B, paralaxe e tipo espectral).
+# B_V = B − V, calculado a partir das magnitudes B e V do SIMBAD.
+# Bibcodes: fotometria V/B | paralaxe | tipo espectral.
+nome,id_simbad,tipo_mk,V,B_V,paralaxe_mas,fonte
+Sirius A,* alf CMa,A0mA1Va,-1.46,0.00,379.21,SIMBAD 2026-10-04; 2002yCat.2237....0D | 2007A&A...474..653V | 2003AJ....126.2048G
+Vega,* alf Lyr,A0V,0.03,0.00,130.23,SIMBAD 2026-10-04; 2002yCat.2237....0D | 2007A&A...474..653V | 2024A&A...690A.176N
+Procyon A,* alf CMi,F5IV-V,0.37,0.42,284.56,SIMBAD 2026-10-04; 2002yCat.2237....0D | 2007A&A...474..653V | 2013yCat....1.2023S
+Alpha Centauri A,* alf Cen A,G2V,0.01,0.71,742.12,SIMBAD 2026-10-04; 2002yCat.2237....0D | 1997A&A...323L..49P | 2006A&A...460..695T
+Proxima Centauri,NAME Proxima Centauri,M5.5Ve,11.13,1.82,768.07,SIMBAD 2026-10-04; 2014AJ....147...21J | 2020yCat.1350....0G | 1991AJ....101..662B
+Arcturus,* alf Boo,K1.5III,-0.05,1.23,88.83,SIMBAD 2026-10-04; 2002yCat.2237....0D | 2007A&A...474..653V | 1989ApJS...71..245K
+Aldebaran,* alf Tau,K5III,0.86,1.54,48.94,SIMBAD 2026-10-04; 2002yCat.2237....0D | 2007A&A...474..653V | 1989ApJS...71..245K
+Betelgeuse,* alf Ori,M1-M2Ia-Iab,0.42,1.85,6.55,SIMBAD 2026-10-04; 1966CoLPL...4...99J | 2007A&A...474..653V | 1989ApJS...71..245K
+Rigel,* bet Ori,B8Ia,0.13,-0.03,3.78,SIMBAD 2026-10-04; 2002yCat.2237....0D | 2007A&A...474..653V | 2024A&A...690A.176N
+Sirius B,* alf CMa B,DA1.9,8.44,-0.03,374.49,SIMBAD 2026-10-04; fotometria sem bibcode no SIMBAD | 2020yCat.1350....0G | 2011ApJ...743..138G

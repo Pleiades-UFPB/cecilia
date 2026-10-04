@@ -69,9 +69,19 @@ uv run ruff format .   # formata o código
 
 O CI (GitHub Actions, `.github/workflows/ci.yml`) roda os mesmos comandos em cada PR para a `main`.
 
+## Aquecimento (Fase 01)
+
+```bash
+uv run python -m cecilia.aquecimento
+```
+
+Lê `data/aquecimento/estrelas_famosas.csv` (10 estrelas, valores do SIMBAD), calcula a magnitude absoluta M_V e salva o diagrama HR observacional em `outputs/fase01/hr_aquecimento.png`.
+
 ## Agradecimentos de dados
 
 This work has made use of data from the European Space Agency (ESA) mission *Gaia* (https://www.cosmos.esa.int/gaia), processed by the *Gaia* Data Processing and Analysis Consortium (DPAC, https://www.cosmos.esa.int/web/gaia/dpac/consortium). Funding for the DPAC has been provided by national institutions, in particular the institutions participating in the *Gaia* Multilateral Agreement.
+
+This research has made use of the SIMBAD database, operated at CDS, Strasbourg, France.
 
 Os textos de agradecimento de LAMOST, 2MASS e APOKASC-3 serão adicionados na Fase 02, conforme as políticas de cada fonte (ver `data/README.md`).
 

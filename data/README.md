@@ -22,7 +22,9 @@ Nenhum arquivo de dados é versionado. Este manifesto é a fonte de verdade sobr
 
 | Arquivo | Fonte | Consulta / URL | Data | Linhas | Responsável |
 |---|---|---|---|---|---|
-| | | | | | |
+| `aquecimento/estrelas_famosas.csv` | SIMBAD (CDS) | Digitado à mão a partir do SIMBAD (V, B, paralaxe, tipo espectral); bibcodes por linha | 2026-10-04 | 10 | Plano 01-02 |
+
+**Exceção versionada:** `aquecimento/estrelas_famosas.csv` é o único arquivo de dados no git. É pequeno, digitado à mão e didático (aquecimento da Fase 01), não um cache de consulta. Todo o resto de `data/` segue a regra: não versionado.
 
 ## Agradecimentos obrigatórios
 
