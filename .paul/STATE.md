@@ -11,18 +11,19 @@ about: "CECILIA"
 See: .paul/PROJECT.md (updated 2026-10-04)
 
 **Core value:** O grupo aprende o pipeline completo — da consulta ao catálogo até a interpretação do modelo — de forma cientificamente correta e reprodutível.
-**Current focus:** Project initialized — ready for planning
+**Current focus:** v0.1 Pipeline completo — Phase 1 (Fundação)
 
 ## Current Position
 
-Milestone: v0.1 Initial Release
-Phase: Not yet defined
-Plan: None yet
-Status: Ready to create roadmap and first PLAN
-Last activity: 2026-10-04 10:59 — Project initialized
+Milestone: v0.1 Pipeline completo (v0.1.0)
+Phase: 1 of 7 (Fundação)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-10-04 11:02 — Milestone created
 
 Progress:
-- Milestone: [░░░░░░░░░░] 0%
+- v0.1 Pipeline completo: [░░░░░░░░░░] 0%
+- Phase 1: [░░░░░░░░░░] 0%
 
 ## Loop Position
 
@@ -38,6 +39,7 @@ PLAN ──▶ APPLY ──▶ UNIFY
 - PROJECT.md populado a partir de `docs/PROJECT-BRIEF.md`
 - Sem integrações opcionais (SonarQube, enterprise audit, special flows)
 - Repositório conectado a github.com/Pleiades-UFPB/cecilia (main)
+- Milestone v0.1 com as 7 fases de `docs/ROADMAP-PROPOSTO.md`; Fase 8 adiada para v0.2
 
 ### Deferred Issues
 None yet.
@@ -47,10 +49,10 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-10-04 10:59
-Stopped at: Project initialization complete
-Next action: /paul:milestone v0.1-pipeline-completo, depois /paul:add-phase por fase de docs/ROADMAP-PROPOSTO.md
-Resume file: .paul/PROJECT.md
+Last session: 2026-10-04 11:02
+Stopped at: Milestone created, ready to plan
+Next action: /paul:plan for Phase 1
+Resume file: .paul/ROADMAP.md
 
 ---
 *STATE.md — Updated after every significant action*

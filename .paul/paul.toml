@@ -1,5 +1,5 @@
 name = "cecilia"
-version = "0.0.0"
+version = "0.1.0"
 status = "active"
 path = "."
 tags = []
@@ -9,14 +9,14 @@ version = "1.4"
 source = "https://chrisai.cv/skool"
 
 [milestone]
-name = "None"
-version = "0.0.0"
-status = "not_started"
-phases = 0
+name = "v0.1 Pipeline completo"
+version = "0.1.0"
+status = "in_progress"
+phases = 7
 
 [phase]
-number = 0
-name = "None"
+number = 1
+name = "Fundação"
 status = "not_started"
 plans_completed = 0
 
@@ -29,4 +29,4 @@ groom = true
 [stats]
 total_plans = 0
 total_phases = 0
-last_activity = "2026-10-04T10:59:05-03:00"
+last_activity = "2026-10-04T11:02:26-03:00"

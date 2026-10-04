@@ -41,8 +41,8 @@ Desenvolvimento assistido por IA com **Claude Code** e o framework **PAUL** (Pla
 
 | Item | Valor |
 |------|-------|
-| Milestone | v0.1 — pipeline completo (não iniciado) |
-| Fase atual | PAUL inicializado; fases a criar a partir de [`docs/ROADMAP-PROPOSTO.md`](docs/ROADMAP-PROPOSTO.md) |
+| Milestone | v0.1 — pipeline completo (em andamento, 0 de 7 fases) |
+| Fase atual | Fase 01 — Fundação (pronta para planejar). Roadmap: [`.paul/ROADMAP.md`](.paul/ROADMAP.md) |
 | Estado detalhado | [`.paul/STATE.md`](.paul/STATE.md) |
 
 ## Estrutura
