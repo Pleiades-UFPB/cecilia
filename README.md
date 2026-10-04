@@ -31,8 +31,6 @@ Fora do escopo: detecção de exoplanetas (coberta pelo ExoHunter), objetos não
 Alunos: João Pedro, Luis Eduardo, Maria Vitória, Luan Motta e Arthur.
 Orientação: Prof. Carlos Eduardo Batista (CI/UFPB, LAViD).
 
-Proposta original: Luis Eduardo, a partir de reunião de alinhamento do grupo Pleiades.
-
 ## Como o projeto é desenvolvido
 
 Desenvolvimento assistido por IA com **Claude Code** e o framework **PAUL** (Plan-Apply-Unify Loop). Todo trabalho segue o ciclo PLAN → APPLY → UNIFY, com critérios de aceitação definidos antes da execução. Detalhes em [`CLAUDE.md`](CLAUDE.md) e [`docs/EQUIPE-E-RODIZIO.md`](docs/EQUIPE-E-RODIZIO.md).
