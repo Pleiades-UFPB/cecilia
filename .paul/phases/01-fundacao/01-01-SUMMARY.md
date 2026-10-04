@@ -57,7 +57,7 @@ about: "CECILIA"
 | AC-1: Ambiente sobe do zero (AC-01.1) | Pass | Clone limpo da branch → `uv sync --locked` + `uv run pytest`: 12 passed, Python 3.11.15 |
 | AC-2: Teste de fumaça detecta ambiente quebrado | Pass | 1 teste de versão + 11 parametrizados (id = nome do módulo); falha nomeia a biblioteca |
 | AC-3: Lint e formatação padronizados | Pass | `ruff check .` → All checks passed; `ruff format --check .` → sem pendências |
-| AC-4: CI verifica cada PR | Pass (local) — confirmar no PR | Workflow válido (YAML carregado, 6 passos). Só dispara em PR/push na main; check verde é confirmado no PR deste plano |
+| AC-4: CI verifica cada PR | Pass | Check "testes" verde no PR #1 em 26s (run 37208304238) |
 | AC-T.1: Reprodutibilidade | Pass | Mesmo resultado em clone limpo |
 
 ## Accomplishments
@@ -126,7 +126,7 @@ about: "CECILIA"
 
 | Issue | Resolution |
 |-------|------------|
-| CI só dispara em PR/push na main; não dá para ver verde antes do PR | AC-4 confirmado no PR deste plano (aberto após o UNIFY, conforme CLAUDE.md) |
+| CI só dispara em PR/push na main; não dá para ver verde antes do PR | Confirmado no PR #1: check verde em 26s |
 
 ## Next Phase Readiness
 
