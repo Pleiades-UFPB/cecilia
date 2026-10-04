@@ -25,7 +25,7 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 
 | Phase | Name | Plans | Status | Completed |
 |-------|------|-------|--------|-----------|
-| 1 | Fundação | TBD | Not started | - |
+| 1 | Fundação | 1/3 | In progress | - |
 | 2 | Aquisição de dados | TBD | Not started | - |
 | 3 | Limpeza e features | TBD | Not started | - |
 | 4 | Classificação espectral (Trilho A) | TBD | Not started | - |
@@ -47,7 +47,10 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 - Revisão coletiva do `docs/VOCABULARIO.md`
 - Aquecimento: script que lê tabela de 10 estrelas famosas (digitadas à mão) e plota um HR
 
-**Plans:** TBD (defined during /paul:plan)
+**Plans:**
+- [x] 01-01: Ambiente reprodutível (uv.lock, pytest, ruff, teste de fumaça, CI)
+- [ ] 01-02: Aquecimento — tabela de 10 estrelas e diagrama HR
+- [ ] 01-03: Revisão coletiva do VOCABULARIO (checkpoint humano)
 
 ### Phase 2: Aquisição de dados
 
