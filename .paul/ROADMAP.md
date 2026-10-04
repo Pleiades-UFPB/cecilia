@@ -25,7 +25,7 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 
 | Phase | Name | Plans | Status | Completed |
 |-------|------|-------|--------|-----------|
-| 1 | Fundação | 1/3 | In progress | - |
+| 1 | Fundação | 1/3 | Planning | - |
 | 2 | Aquisição de dados | TBD | Not started | - |
 | 3 | Limpeza e features | TBD | Not started | - |
 | 4 | Classificação espectral (Trilho A) | TBD | Not started | - |

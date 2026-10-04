@@ -16,10 +16,10 @@ See: .paul/PROJECT.md (updated 2026-10-04)
 ## Current Position
 
 Milestone: v0.1 Pipeline completo (v0.1.0)
-Phase: 1 of 7 (Fundação) — In Progress
-Plan: 01-01 complete (1 of 3)
-Status: Ready for next PLAN (01-02)
-Last activity: 2026-10-04 11:10 — UNIFY 01-01, loop closed
+Phase: 1 of 7 (Fundação) — Applying
+Plan: 01-02 applying — Tasks 1–2 done, Task 3 (checkpoint) pending
+Status: Paused at checkpoint:human-verify
+Last activity: 2026-10-04 11:37 — Session paused at 01-02 Task 3 checkpoint
 
 Progress:
 - Milestone: [░░░░░░░░░░] 5%
@@ -30,7 +30,7 @@ Progress:
 Current loop state:
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ✓        ✓     [Loop complete - ready for next PLAN]
+  ✓        ◉        ○     [APPLY paused at checkpoint]
 ```
 
 ## Accumulated Context
@@ -42,6 +42,8 @@ PLAN ──▶ APPLY ──▶ UNIFY
 - Fase 1 dividida em 3 planos: 01-01 ambiente+CI, 01-02 aquecimento HR, 01-03 revisão do vocabulário
 - CI no GitHub Actions incluído no 01-01 (escopo extra aprovado)
 - Python 3.11 fixado; ruff E/F/I/UP/B; .claude e .paul fora do ruff (01-01)
+- Aquecimento HR (01-02): observacional B−V × M_V, valores verificados no SIMBAD
+- PR obrigatório só para código; docs e .paul/ direto na main (CLAUDE.md)
 - Milestone v0.1 com as 7 fases de `docs/ROADMAP-PROPOSTO.md`; Fase 8 adiada para v0.2
 
 ### Deferred Issues
@@ -55,10 +57,15 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-10-04 11:10
-Stopped at: Plan 01-01 loop closed; PR aberto com SUMMARY
-Next action: Merge do PR do 01-01 após aprovação; depois /paul:plan para 01-02 (aquecimento HR)
-Resume file: .paul/phases/01-fundacao/01-01-SUMMARY.md
+Last session: 2026-10-04 11:37
+Stopped at: 01-02 APPLY, checkpoint Task 3 (figura HR) aguardando "approved" ou "corrige"
+Next action: /paul:resume → responder checkpoint; se "corrige", ajustar rótulos que saem dos eixos (Proxima, Betelgeuse)
+Resume file: .paul/HANDOFF-2026-10-04.md
+Resume context:
+- Branch fase-01/plano-02-aquecimento-hr (local), código em 793975b; 25 testes passando
+- Física da figura correta; defeito só visual (rótulo "Proxima Centauri" cortado na borda)
+- Após checkpoint: UNIFY → PR → CI → merge (merge sem revisão precisa ser feito pelo usuário)
+Git strategy: branch por plano (fase-NN/plano-NN-...)
 
 ---
 *STATE.md — Updated after every significant action*
