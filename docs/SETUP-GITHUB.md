@@ -41,6 +41,8 @@ done
 
 Settings → Branches → regra para `main`: exigir PR e 1 aprovação. Combina com a regra "revisor da fase aprova o PR".
 
+O GitHub não filtra a proteção por pasta. Por isso, o push direto de documentação e estado do PAUL (ver seção Git do `CLAUDE.md`) só funciona para quem pode furar a regra: admins (com `enforce_admins` desligado) ou usuários listados em "Allow specified actors to bypass required pull requests".
+
 ## Inicializando o PAUL
 
 ```bash

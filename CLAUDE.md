@@ -37,8 +37,10 @@ Vocabulário oficial: `docs/VOCABULARIO.md`. Use os termos exatamente como defin
 
 ## Git
 
-- Branch por plano: `fase-NN/plano-NN-descricao-curta`.
-- PR só é aberto depois do `/paul:unify`; o `SUMMARY.md` do plano vai no PR.
+- **PR obrigatório só para código.** Qualquer mudança em `src/`, `tests/`, `notebooks/`, scripts, `pyproject.toml`, `uv.lock` ou `.github/` vai em branch por plano (`fase-NN/plano-NN-descricao-curta`) e entra na `main` por PR. O PR só é aberto depois do `/paul:unify`; o `SUMMARY.md` do plano vai no PR.
+- **Sem PR para documentação e estado do PAUL.** Mudanças só em `docs/`, `README.md`, `CLAUDE.md`, `data/README.md` e `.paul/` (milestone, roadmap, STATE, handoff) podem ir direto para a `main`, depois de `git pull`.
+- Commit misto (código + docs) segue a regra do código: PR.
+- Os artefatos `.paul/` de um plano de código (PLAN, SUMMARY, STATE do loop) viajam na branch do plano, junto com o código.
 - Commits em português, no imperativo: "Adiciona consulta ao gaia_source com cache".
 
 ## Escopo

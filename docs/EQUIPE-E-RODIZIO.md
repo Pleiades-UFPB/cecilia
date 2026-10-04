@@ -12,7 +12,7 @@ Orientador: Prof. Carlos Eduardo Batista. Cronograma e prazos: definidos pelo or
 
 ## Papéis por fase
 
-- **Responsável:** conduz os loops PAUL da fase (`/paul:plan`, `/paul:apply`, `/paul:unify`) e abre os PRs.
+- **Responsável:** conduz os loops PAUL da fase (`/paul:plan`, `/paul:apply`, `/paul:unify`) e abre os PRs de código (documentação e estado do PAUL vão direto para a `main`, ver `CLAUDE.md`).
 - **Revisor:** revisa cada PR da fase contra os ACs antes do merge.
 - **Demais:** acompanham, testam, discutem no `/paul:discuss`.
 
