@@ -5,3 +5,21 @@
 action = "milestone_create"
 phase = 1
 at = "2026-10-04T11:02:26-03:00"
+
+[[entry]]
+action = "plan"
+phase = 1
+plan = "01-01"
+at = "2026-10-04T11:07:09-03:00"
+
+[[entry]]
+action = "apply"
+phase = 1
+plan = "01-01"
+at = "2026-10-04T11:09:32-03:00"
+
+[[entry]]
+action = "unify"
+phase = 1
+plan = "01-01"
+at = "2026-10-04T11:10:40-03:00"

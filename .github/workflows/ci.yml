@@ -1,0 +1,39 @@
+# CI do CECILIA: roda em todo PR para a main e em todo push na main.
+# Executa exatamente os mesmos comandos que cada aluno roda localmente.
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      # Baixa o código do repositório.
+      - uses: actions/checkout@v7
+
+      # Instala o uv. A versão do Python vem do arquivo .python-version (3.11).
+      # O setup-uv não publica tag "v10" móvel, por isso a versão é fixada inteira.
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          enable-cache: true
+
+      # Cria o ambiente com as versões exatas do uv.lock.
+      # --locked falha se o uv.lock estiver desatualizado em relação ao pyproject.toml.
+      - name: Instala dependências
+        run: uv sync --locked
+
+      # Erros de estilo, imports não usados, bugs comuns.
+      - name: Lint (ruff check)
+        run: uv run ruff check .
+
+      # Formatação padronizada; falha se algum arquivo precisar ser reformatado.
+      - name: Formatação (ruff format)
+        run: uv run ruff format --check .
+
+      # Testes automatizados.
+      - name: Testes (pytest)
+        run: uv run pytest

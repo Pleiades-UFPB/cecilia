@@ -29,5 +29,16 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/cecilia"]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
 [tool.ruff]
 line-length = 100
+target-version = "py311"
+# Framework PAUL de terceiros e estado gerenciado pelo PAUL: o ruff não deve reformatar
+# (a partir do ruff 0.16 ele também formata blocos de código em Markdown).
+extend-exclude = [".claude", ".paul"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
