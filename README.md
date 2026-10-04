@@ -65,7 +65,11 @@ git clone https://github.com/Pleiades-UFPB/cecilia.git
 cd cecilia
 uv sync
 uv run pytest
+uv run ruff check .    # lint
+uv run ruff format .   # formata o código
 ```
+
+O CI (GitHub Actions, `.github/workflows/ci.yml`) roda os mesmos comandos em cada PR para a `main`.
 
 ## Agradecimentos de dados
 
