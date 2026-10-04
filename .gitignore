@@ -1,0 +1,26 @@
+# dados (nunca versionar)
+data/raw/*
+data/interim/*
+data/processed/*
+!data/*/.gitkeep
+*.parquet
+*.fits
+*.csv.gz
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# artefatos
+models/
+outputs/
+*.joblib
+*.pkl
+
+# sistema
+.DS_Store
+.env
