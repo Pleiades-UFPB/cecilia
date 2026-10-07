@@ -18,9 +18,13 @@ __pycache__/
 # artefatos
 models/
 outputs/
+personal/
+docs/physics-material/.obsidian
 *.joblib
 *.pkl
 
 # sistema
 .DS_Store
 .env
+
+
