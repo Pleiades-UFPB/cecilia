@@ -16,6 +16,8 @@ $$
 
 Aqui $\large n_i$ e $\large n_{i+1}$ são as densidades de átomos com $\large i$ e $\large i+1$ elétrons removidos, $\large n_e$ é a densidade de elétrons livres, $\large g$ são os pesos estatísticos, $\large \chi_i$ é a energia de ionização e $\large T$ é a temperatura.
 
+![[payne.jpeg]]
+
 A equação de *Saha* diz qual fração dos átomos está ionizada a uma dada temperatura. Em baixa $\large T$ o fator exponencial é minúsculo e quase tudo fica neutro. Em alta $\large T$ a ionização domina. Combinada com a distribuição de *Boltzmann*, que diz quantos átomos neutros estão em cada nível de excitação, ela prevê quando uma linha espectral é mais forte. 
 
 Isso resolve o problema central. Se a composição química fosse a mesma em todas as estrelas, o que mudaria de uma classe para outra seria apenas a temperatura, e a temperatura sozinha já bastaria para mudar quais linhas aparecem. 
@@ -46,6 +48,7 @@ Cada seta perde ou mistura informação. Poeira, binárias e a diferença entre 
 $$
 \huge F = \frac{L}{4\pi d^2}
 $$
+![[Inverse_square_law.svg]]
 
 Duas consequências: dobrar a distância divide o fluxo por 4, e para saber $\large L$ a partir do fluxo medido é preciso conhecer $\large d$. 
 
@@ -67,6 +70,8 @@ $$
 ## Magnitudes
 
 **Intuição.** Astrônomos medem brilho em **magnitudes**, uma escala logarítmica e *invertida*: quanto menor o número, mais brilhante. Vem de uma convenção grega antiga em que estrelas de "primeira magnitude" eram as mais brilhantes.
+
+![[mag_scale.png]]
 
 **Formalização (Pogson).** Por definição, 5 magnitudes correspondem a um fator 100 em fluxo:
 
@@ -111,7 +116,7 @@ $$
 
 Ou seja, `parallax_over_error` é a razão sinal-ruído da paralaxe, e seu inverso é o erro fracionário na distância.
 
-![[Pasted image 20261007115919.png]]
+![[paralaxe.png]]
 
 **Exemplo numérico**:
 
@@ -125,6 +130,8 @@ Já $\large \varpi = 1{,}0\pm0{,}5$ mas dá erro de 50%, e o erro na magnitude a
 ## Cor e temperatura
 
 **Intuição.** A cor de uma estrela diz sua temperatura. E há um truque importante: a cor **não depende da distância**.
+
+![[example_stars.jpeg]]
 
 **Formalização (cor).** Um índice de cor é a diferença de magnitudes em duas bandas:
 
@@ -146,6 +153,8 @@ Dela saem duas leis úteis. A **lei de Wien** diz onde o espectro tem pico:
 $$
 \huge \lambda_{\max}\,T = b \approx 2{,}898\times10^{-3}\ \text{m·K}
 $$
+
+![[weins_law.jpg]]
 
 E a **lei de Stefan-Boltzmann** diz quanta energia sai por unidade de área da superfície, e portanto a luminosidade total:
 

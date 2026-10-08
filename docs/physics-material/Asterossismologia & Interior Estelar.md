@@ -399,5 +399,3 @@ ou seja, cerca de 600 milhões de toneladas de hidrogênio por segundo. O Sol ai
 **Armadilha final.** Uma visualização bonita de interior estelar **dá a impressão** de que conhecemos o interior com a mesma certeza que o exterior. Não conhecemos. O que sabemos bem vem da física de equilíbrio e de ferramentas como a sismologia; o resto são modelos calibrados. Rotular a figura da Fase 07 como "ilustração didática de um modelo 1D" é a forma correta de não afirmar mais do que se sabe.
 
 ---
-
-Fim da trilogia. Pontos de contato entre os arquivos: a lei de Stefan-Boltzmann do arquivo 01 conecta HR e Kiel; as ferramentas de interpretação do arquivo 02 são o que permite verificar se um classificador do Trilho B aprendeu a física descrita aqui.

@@ -2,14 +2,9 @@
 Este arquivo cobre a ferramenta estatística do CECILIA: como transformar uma tabela de features (cores, magnitudes) em um classificador, como medir se ele funciona e como interrogá-lo sobre o que aprendeu. Aplica-se aos dois trilhos, mas os exemplos físicos vêm principalmente do Trilho A. 
 
 ---
-
-## 1. O que significa "aprender" aqui
-
-*Ligação com o projeto: Fases 04 e 05.*
+## O que significa "aprender" aqui
 
 **Intuição.** Um classificador é uma função que recebe os números de uma estrela e devolve uma classe. "Aprender" é escolher essa função, dentre muitas possíveis, olhando exemplos em que a resposta já é conhecida.
-
-**Analogia.** Um sommelier em treinamento prova centenas de vinhos com o rótulo à vista. Depois, prova vinhos sem rótulo e tenta acertar. Não decorou garrafas: formou critérios (acidez, corpo, aroma) que generalizam para vinhos novos.
 
 **Formalização.** Cada estrela é um vetor de **features** $\large \mathbf{x}\in\mathbb{R}^n$ (por exemplo, $\large n=6$: BP−RP, G−RP, J−H, H−Ks, G−Ks e $\large M_G$). Seu **rótulo** é $\large y\in\{1,\dots,K\}$ (a classe espectral). Procuramos $\large f$ tal que
 
@@ -28,12 +23,9 @@ $$
 **Armadilha.** Minimizar a perda no treino não é o objetivo. O objetivo é errar pouco em estrelas **novas**. Um modelo flexível o bastante decora os exemplos de treino, inclusive o ruído, e isso se chama *overfitting*. Quase todo o resto deste arquivo é sobre como evitar ou detectar isso.
 
 ---
+## Preparar os dados: ausentes, partições e vazamento
 
-## 2. Preparar os dados: ausentes, partições e vazamento
-
-*Ligação com o projeto: Fase 03 (valores ausentes, partição treino/validação/teste, verificação anti-vazamento).*
-
-### 2.1 Valores ausentes
+### Valores ausentes
 
 **Intuição.** Nem toda estrela tem todas as colunas preenchidas (uma estrela pode não ter fotometria 2MASS de boa qualidade, por exemplo). É preciso decidir entre remover a linha ou **imputar** um valor.
 
@@ -43,17 +35,15 @@ $$
 
 **Armadilha.** A média (ou qualquer valor de imputação) deve ser calculada **só com os dados de treino**. Calcular com todos os dados já é vazamento (seção 2.3).
 
-### 2.2 Partição treino / validação / teste
+### Partição treino / validação / teste
 
 **Intuição.** Cada pedaço dos dados tem uma função diferente.
-
-**Analogia.** O aluno estuda com a lista de exercícios (**treino**), faz um simulado para ajustar o método de estudo (**validação**) e só faz a prova final uma vez (**teste**). Se ajustar o método olhando a prova final, a nota deixa de medir aprendizado.
 
 **Formalização.** Uma divisão típica é 70/15/15 por cento, **estratificada** (cada partição preserva a proporção de classes). A **semente fixa** garante que a mesma divisão possa ser reproduzida.
 
 **Exemplo.** Se a classe M é 3% dos dados, uma divisão aleatória simples pode deixar o teste com 1% ou 5% de M, o que torna as métricas instáveis. Estratificar corrige isso.
 
-### 2.3 Vazamento de dados (*data leakage*)
+### Vazamento de dados (*data leakage*)
 
 **Intuição.** Vazamento é qualquer caminho pelo qual informação do teste (ou da resposta) entra no treino, inflando artificialmente o desempenho.
 
@@ -67,10 +57,7 @@ $$
 **Armadilha.** O vazamento quase nunca dá erro: ele dá um resultado *bom demais*. Se o desempenho parece excelente na primeira tentativa, a primeira hipótese é vazamento, e não genialidade do modelo.
 
 ---
-
-## 3. Baseline: o ponto de comparação
-
-*Ligação com o projeto: Fases 04 e 05 (baseline antes dos modelos).*
+## Baseline: o ponto de comparação
 
 **Intuição.** Um modelo só é bom em relação a alguma outra coisa. O *baseline* é a alternativa mais simples que alguém poderia usar.
 
@@ -81,10 +68,7 @@ $$
 **Armadilha.** Se o ML não supera o baseline com folga, essa também é uma conclusão científica legítima, e não um fracasso a esconder.
 
 ---
-
-## 4. Árvores de decisão
-
-*Ligação com o projeto: base do Random Forest e do XGBoost (Fases 04 e 05).*
+## Árvores de Decisão
 
 **Intuição.** Uma árvore faz perguntas de sim/não sobre as features ("BP−RP < 1,0?") até chegar a um grupo de estrelas parecidas. Cada pergunta é escolhida para separar as classes da melhor forma possível.
 
@@ -110,12 +94,7 @@ $$
 O ganho é $\large 0{,}5-(0{,}5\cdot0{,}32+0{,}5\cdot0{,}32)=0{,}18$. A árvore testa todos os cortes em todas as features e escolhe o de maior ganho.
 
 **Armadilha.** Uma árvore profunda separa perfeitamente o treino (cada folha com uma única estrela) e generaliza mal. Árvores individuais são **instáveis**: mudar poucos exemplos pode mudar a árvore inteira. Isso motiva as florestas.
-
----
-
-## 5. Random Forest
-
-*Ligação com o projeto: Fases 04 e 05.*
+### Random Forest
 
 **Intuição.** Em vez de confiar numa árvore instável, treina-se centenas de árvores, cada uma vendo uma versão ligeiramente diferente dos dados, e elas **votam**. Os erros individuais tendem a se cancelar.
 
@@ -137,11 +116,7 @@ Com muitas árvores ($\large B\to\infty$) o segundo termo some, e o que sobra é
 
 **Armadilha.** Floresta reduz **variância**, mas não corrige **viés**: se todas as árvores cometem o mesmo erro sistemático (por exemplo, por causa de um rótulo enviesado), a votação não conserta.
 
----
-
-## 6. Gradient Boosting e XGBoost
-
-*Ligação com o projeto: Fases 04 e 05.*
+### Gradient Boosting e XGBoost
 
 **Intuição.** A floresta treina árvores em paralelo e independentes. O *boosting* faz o oposto: treina árvores **em sequência**, e cada nova árvore tenta corrigir os erros das anteriores.
 
@@ -186,10 +161,8 @@ O resíduo médio seria 2, mas a folha prediz 1,5: o termo $\large \lambda$ **en
 **Armadilha.** Classificação multiclasse no XGBoost usa a função softmax e treina uma árvore por classe a cada rodada. As probabilidades de saída tendem a ser mal calibradas: um "0,9" não é automaticamente 90% de acerto.
 
 ---
+## Desbalanceamento de Classes
 
-## 7. Desbalanceamento de classes
-
-*Ligação com o projeto: Fase 04 (Balanced Random Forest) e `REFERENCIAS.md` (Sahlmann & Gómez).*
 
 **Intuição.** Quando uma classe é muito mais rara que as outras, o modelo pode "ignorá-la" sem pagar quase nada na perda.
 
@@ -200,18 +173,15 @@ O resíduo médio seria 2, mas a folha prediz 1,5: o termo $\large \lambda$ **en
 **Armadilha.** Balancear muda as **probabilidades**: o modelo passa a super-representar a classe rara, e as probabilidades de saída já não refletem as frequências reais do céu. Para decidir "o quão provável é que esta estrela seja B", é preciso corrigir pelas proporções originais. Para apenas ranquear candidatos, geralmente não importa.
 
 ---
+## Métricas
 
-## 8. Métricas
-
-*Ligação com o projeto: Fases 04 e 05 (macro-F1, matriz de confusão, curva PR por classe).*
-
-### 8.1 Matriz de confusão
+### 1. Matriz de confusão
 
 **Intuição.** Uma tabela $\large K\times K$ em que a linha é a classe verdadeira e a coluna a prevista. A diagonal são os acertos. Os erros fora da diagonal contam *como* o modelo erra, e não só *quanto*.
 
 **Uso físico.** Esperamos que os erros se concentrem nas casas vizinhas (G confundida com K, e não com O). Se aparecerem erros "distantes", algo está errado com a física ou com os dados.
 
-### 8.2 Precisão, recall e F1
+### 2. Precisão, recall e F1
 
 **Para uma classe específica**, com $\large TP$ (verdadeiros positivos), $\large FP$ (falsos positivos) e $\large FN$ (falsos negativos):
 
@@ -231,7 +201,7 @@ $$
 
 **Por que média harmônica?** Com $\large P=1{,}0$ e $\large R=0{,}1$, a média aritmética é 0,55, que soa razoável. O F1 é $\large 0{,}18$. A média harmônica é dominada pelo valor menor, então não permite compensar um desastre num lado com excelência no outro.
 
-### 8.3 Macro-F1
+### 3. Macro-F1
 
 $$
 \huge \text{macro-}F_1 = \frac{1}{K}\sum_{k=1}^{K} F_{1,k}
@@ -239,13 +209,13 @@ $$
 
 É a média simples dos F1 de cada classe, dando o **mesmo peso a classes raras e comuns**. A alternativa (média ponderada pelo tamanho das classes) deixa a classe dominante ditar o resultado e esconde falhas nas raras. Por isso o ROADMAP escolhe macro-F1.
 
-### 8.4 Curva Precisão–Recall
+### 4. Curva Precisão–Recall
 
 **Intuição.** O modelo dá uma probabilidade para cada estrela. Variando o limiar de decisão (de "só aceito se for 0,99" até "aceito qualquer 0,01"), obtém-se um par (recall, precisão) para cada limiar. A curva resultante mostra todo o compromisso de uma vez.
 
 **Por que PR e não ROC.** Para classes raras, a curva ROC pode parecer ótima mesmo com muitos falsos positivos, porque o número enorme de negativos verdadeiros "dilui" a taxa de falsos positivos. A curva PR olha só para o que o modelo chamou de positivo, e por isso é mais honesta. Uma referência útil: a precisão de um classificador aleatório numa curva PR é igual à **prevalência** da classe (se a classe é 1%, o chute vale 0,01).
 
-### 8.5 Regressão (Trilho B, exercício opcional)
+### 5. Regressão (Trilho B, exercício opcional)
 
 Para prever massa, a classificação dá lugar a métricas de erro numérico, como a raiz do erro quadrático médio e o coeficiente de determinação:
 
@@ -256,10 +226,7 @@ $$
 **Armadilha geral das métricas.** Um número só (macro-F1, por exemplo) esconde estrutura. Sempre olhe também a matriz de confusão e as curvas por classe.
 
 ---
-
-## 9. Validação cruzada k-fold
-
-*Ligação com o projeto: Fases 04 e 05, `REFERENCIAS.md`.*
+## Validação Cruzada k-fold
 
 **Intuição.** Uma única divisão treino/teste depende da sorte da divisão. A validação cruzada repete o processo $\large k$ vezes, cada vez deixando um pedaço diferente para teste, e faz a média.
 
@@ -283,9 +250,8 @@ A variação entre as $\large k$ avaliações dá uma noção da estabilidade do
 
 ---
 
-## 10. Interpretação com SHAP e confundidores
+## Interpretação com SHAP e confundidores
 
-*Ligação com o projeto: Fase 04 (interpretação, investigação de confundidores) e `REFERENCIAS.md` (Sahlmann & Gómez).*
 
 **Intuição.** Depois de treinar, queremos saber **por que** o modelo previu o que previu, e quais features pesam mais. O SHAP responde atribuindo a cada feature uma contribuição para cada previsão individual.
 
@@ -318,10 +284,7 @@ $\large 15+25=40$, que é exatamente $\large v(\{A,B\})-v(\varnothing)$. ✓ O c
 **Armadilha.** O SHAP explica **o modelo**, e não o mundo. Se duas features são muito correlacionadas (BP−RP e G−RP, por exemplo), o crédito é dividido entre elas de forma arbitrária, e nenhuma parece muito importante mesmo que juntas sejam essenciais. E uma feature "importante" para o modelo pode ser importante justamente por ser um atalho enviesado.
 
 ---
-
-## 11. Limitações honestas
-
-*Ligação com o projeto: Fase 04 (investigação de confundidores) e Fase 06.*
+## Limitações
 
 **Intuição.** Um modelo de ML é, no fundo, um interpolador sofisticado sobre os exemplos que viu. Isso traz consequências que o projeto deve declarar.
 
