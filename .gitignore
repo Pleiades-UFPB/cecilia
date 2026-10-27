@@ -17,7 +17,6 @@ __pycache__/
 
 # artefatos
 models/
-outputs/
 *.joblib
 *.pkl
 
