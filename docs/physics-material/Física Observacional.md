@@ -54,7 +54,7 @@ Duas consequências: dobrar a distância divide o fluxo por 4, e para saber $\la
 
 Por isso a paralaxe (deslocamento aparente de um objeto próximo contra o fundo distante quando o observador se move) do Gaia é tão importante: 
 
-A relação $\large F = L/(4\pi d^2)$ é uma equação com duas incógnitas: sem $\large d$, uma estrela fraca e próxima é indistinguível de uma estrela luminosa e distante. A paralaxe mede $\large d$ de forma **geométrica**. O Gaia entrega paralaxes para mais de um bilhão de estrelas, com precisão da ordem de décimos de milissegundo de arco, vindo do espaço, sem a turbulência da atmosfera e com um método homogêneo para toda a amostra. Isso torna possível um diagrama HR observacional em grande escala, em que anãs e gigantes se separam sem depender de modelos. 
+> A relação $\large F = L/(4\pi d^2)$ é uma equação com duas incógnitas: sem $\large d$, uma estrela fraca e próxima é indistinguível de uma estrela luminosa e distante. A paralaxe mede $\large d$ de forma **geométrica**. O Gaia entrega paralaxes para mais de um bilhão de estrelas, com precisão da ordem de décimos de milissegundo de arco, vindo do espaço, sem a turbulência da atmosfera e com um método homogêneo para toda a amostra. Isso torna possível um diagrama HR observacional em grande escala, em que anãs e gigantes se separam sem depender de modelos. 
 
 **Exemplo numérico.** O Sol tem $\large L_\odot = 3{,}828\times10^{26}\ \text{W}$. A $\large d = 1\ \text{UA} = 1{,}496\times10^{11}\ \text{m}$:
 
@@ -74,7 +74,6 @@ $$
 ![[mag_scale.png]]
 
 **Formalização (Pogson).** Por definição, 5 magnitudes correspondem a um fator 100 em fluxo:
-
 $$
 \huge m_1 - m_2 = -2{,}5\,\log_{10}\!\left(\frac{F_1}{F_2}\right)
 $$
@@ -98,7 +97,6 @@ $$
 $$
 
 Conferindo pelo caminho longo: $\large 5\log_{10}200 - 5 = 6{,}505$ e $\large 12{,}0-6{,}505 = 5{,}495$. ✓
-
 Conferência com o Sol: $\large m_V=-26{,}74$ a $\large 4{,}848\times10^{-6}$ pc dá $\large M_V \approx 4{,}83$.
 
 **Armadilha.** Como a escala é invertida, é fácil errar o sinal ao interpretar. Menor magnitude significa mais brilhante, e subir no eixo vertical de um HR corresponde a magnitudes *menores*. Por isso o eixo costuma ser invertido nos gráficos.
@@ -133,14 +131,24 @@ Já $\large \varpi = 1{,}0\pm0{,}5$ mas dá erro de 50%, e o erro na magnitude a
 
 ![[example_stars.jpeg]]
 
-**Formalização (cor).** Um índice de cor é a diferença de magnitudes em duas bandas:
+**Formalização (cor)**: O Gaia tem um instrumento que mede a luz de cada estrela em duas faixas de cor:
+
+- ***Blue Photometer (BP)***: cobre a parte azul do aspecto óptico. $\large [330, 680]$nm.
+- ***Red Photometer (RP)***: cobre a parte vermelha do aspecto óptico. $\large [630, 1050]$nm. 
+
+Cada uma das medidas BP, RP é convertida em uma magnitude, que são os parâmetros $\large G_{BP}, G_{RP}$. Um índice de cor é a diferença de magnitudes em duas bandas, sendo elas:
 
 $$
 \huge \text{BP}-\text{RP} = -2{,}5\,\log_{10}\!\left(\frac{F_{BP}}{F_{RP}}\right)
 $$
+O termo $\large -2{,}5\log_{10}$ aparece porque agora lidamos com MAGNITUDES, e elas seguem a definição discutida anteriormente: $\large m=-2{,}5\log_{10}F+\text{constante}$. Ao dividir os fluxos, o fator $\large 1/(4\pi d^2)$ cancela. Logo a cor é propriedade da estrela (a menos da poeira), e não da distância.
 
-Ao dividir os fluxos, o fator $\large 1/(4\pi d^2)$ cancela. Logo a cor é propriedade da estrela (a menos da poeira), e não da distância.
+Dessa forma, temos a seguinte leitura:
 
+- **BP−RP pequeno (ou negativo):** muito fluxo no azul em relação ao vermelho, então estrela **quente**.
+- **BP−RP grande:** pouco azul em relação ao vermelho, então estrela **fria**.
+
+Como referência, o sol possui $BP−RP \large \approx0{,}82$; estrelas A quentes ficam perto de 0, e M frias ficam perto de 2.
 
 **Formalização (corpo negro).** Uma estrela emite aproximadamente como um corpo negro de temperatura $\large T_{\text{eff}}$. A intensidade por comprimento de onda é a lei de Planck:
 
@@ -162,11 +170,29 @@ $$
 \huge L = 4\pi R^2\,\sigma\,T_{\text{eff}}^4
 $$
 
-A **temperatura efetiva** $\large T_{\text{eff}}$ é *definida* por esta última equação: é a temperatura de um corpo negro com o mesmo raio e a mesma luminosidade da estrela.
+A **temperatura efetiva** $\large T_{\text{eff}}$ é *definida* por esta última equação: é a temperatura de um corpo negro com o mesmo raio e a mesma luminosidade da estrela. Aqui, a definição de corpo negro é um emissor ideal: toda radiação que ele pode emitir, ele emite. Como a temperatura está elevada à **quarta potência** ($T^4$), **pequenos aumentos na temperatura geram aumentos gigantescos na energia emitida**.
+
+- **Exemplo:** Se você dobrar a temperatura de uma estrela ou de um metal aquecido, a quantidade de energia radiada por ele aumentará $2^4 = 16$ vezes!
 
 **Exemplo numérico.** Para o Sol, $\large T_{\text{eff}} = 5772$ K, então $\large \lambda_{\max} = 2{,}898\times10^{-3}/5772 \approx 502$ nm (verde-azulado). Com $\large R_\odot = 6{,}957\times10^{8}$ m e $\large \sigma=5{,}670\times10^{-8}$ W m⁻² K⁻⁴, a lei de Stefan-Boltzmann devolve $\large L_\odot \approx 3{,}83\times10^{26}$ W. ✓
 
-Uma estrela de 10 000 K tem pico em 290 nm (ultravioleta) e, nas bandas ópticas, parece azul-esbranquiçada.
+#### Exemplos para Compreensão
+
+**Estrela Azul (Tipo O / B)**
+- A estrela **Zeta Puppis** tem **40.000 K** de temperatura superficial. Dessa forma, está na faixa do ultravioleta distante, a colocando na classificação **Azul**, possuindo **72 nm** de comprimento de onda de pico. Nós vemos seu brilho como azul intenso.
+
+**Estrela Branco-Azulada / Branca (Tipo A)**]
+- A estrela **Vega** tem **9.600 K** de temperatura superficial. Dessa forma, estaria na classificação **Branca (ou Branco-Azulada)**, possuindo **302 nm** de comprimento de onda de pico. A emissão cobre todo o espectro visível de forma equilibrada com ligeira predominância de comprimentos de onda curtos, resultando em um tom branco brilhante ligeiramente azulado.
+
+**Estrela Amarela (Tipo G)**
+- O **nosso Sol** tem **5.778 K** de temperatura superficial. Dessa forma, estaria na classificação **Amarela**, possuindo **501 nm** de comprimento de onda de pico. A combinação de todas as cores emitidas pelo Sol forma a luz branca no espaço, mas a dispersão atmosférica na Terra faz com que ele seja percebido como amarelo.
+
+**Estrela Laranja (Tipo K)**
+- A estrela **Aldebaran** tem **3.900 K** de temperatura superficial. Dessa forma, estaria na classificação **Laranja**, possuindo **743 nm** de comprimento de onda de pico.
+
+**Estrela Vermelha (Tipo M)**
+- A estrela **Betelgeuse** tem **3.500 K** de temperatura superficial. Dessa forma, estaria na classificação **Vermelha**, possuindo **828 nm** de comprimento de onda de pico. A pouca luz visível que a estrela consegue emitir concentra-se quase toda na faixa do vermelho, dando a ela uma tonalidade avermelhada nítida a olho nu.
+
 
 **Armadilha.** Estrelas **não** são corpos negros perfeitos. As linhas de absorção e a opacidade da atmosfera deformam o espectro. Por isso a relação entre cor e $\large T_{\text{eff}}$ é calibrada empiricamente e depende de gravidade e metalicidade, e um modelo de ML pode aprender essas correções melhor que uma fórmula simples.
 
@@ -193,7 +219,7 @@ Em V, $\large A_V \approx R_V\,E(B-V)$ com $\large R_V\approx 3{,}1$ para a poei
 
 Essa é a Bernard 68, na sua versão visível e infravermelho. É uma nuvem de poeira escura que tapa as estrelas de fundo, e em infravermelho elas aparecem. É a demonstração mais clara de extinção.
 
-**Exemplo numérico.** Se $\large E(B-V) = 0{,}1$, então $\large A_V\approx0{,}31$ *mag*. A estrela parece 0,31 *mag* mais fraca e aproximadamente 0,1 mag mais vermelha. Pode parecer pouco, mas a sequência principal inteira cobre só algumas magnitudes de cor, então 0,1 *mag* já empurra uma estrela para a classe vizinha.
+**Exemplo numérico.** Se $\large E(B-V) = 0{,}1$, então $\large A_V\approx0{,}31$ *mag*. A estrela parece 0,31 *mag* mais fraca e aproximadamente 0,1 *mag* mais vermelha. Pode parecer pouco, mas  como a sequência principal inteira cobre só algumas magnitudes de cor, então 0,1 *mag* já empurra uma estrela para a classe vizinha.
 
 A poeira se acumula com a distância percorrida. Perto do Sol (poucas centenas de *pc*, 200 *pc*) a extinção é pequena, em geral décimos de magnitude no máximo, mas depende bastante da direção. Limitar o volume é uma forma barata de **evitar ter de corrigir** extinção. A alternativa (amostra maior com correção) dá mais estrelas e traz mais incerteza, porque a correção usa mapas 3D de poeira que têm erros próprios.
 
@@ -216,7 +242,7 @@ A poeira se acumula com a distância percorrida. Perto do Sol (poucas centenas d
 
 ![[H-R_ESO.png]]
 
-**Regiões principais.**
+**Regiões principais da imagem acima:**
 
 - **Sequência principal:** a faixa diagonal onde estrelas queimam hidrogênio no núcleo. É onde passam a maior parte da vida. Quanto mais massiva, mais quente e mais luminosa.
 
@@ -224,7 +250,7 @@ A poeira se acumula com a distância percorrida. Perto do Sol (poucas centenas d
 
 - **Anãs brancas:** quentes, mas pequenas e pouco luminosas (restos de estrelas de massa baixa e intermediária).
 
-**Formalização.** A leitura vem da lei de Stefan-Boltzmann. Normalizando pelo Sol:
+**Formalização.** A leitura vem da lei de Stefan-Boltzmann. Normalizando pelo Sol (simbolizado pelo símbolo $\large \odot$):
 
 $$
 \huge \frac{L}{L_\odot} = \left(\frac{R}{R_\odot}\right)^2\left(\frac{T_{\text{eff}}}{T_{\text{eff},\odot}}\right)^4
@@ -281,7 +307,7 @@ Aqui $\large \chi_i$ é a energia de ionização, $\large n_e$ a densidade de el
 
 **O que é um "rótulo LAMOST".** O LAMOST obtém espectros e o *pipeline* atribui o tipo comparando com modelos ou espectros de referência. O rótulo é uma **estimativa** e não uma verdade absoluta. Tem erros, incertezas nas fronteiras entre classes vizinhas e vieses próprios. Essa observação importa muito: quando o modelo "erra", às vezes o rótulo é que está errado.
 
-**Armadilha.** A classe é discreta, mas a temperatura é contínua. Uma estrela com $\large T_{\text{eff}}\approx5200$ K está na fronteira G/K e qualquer pequeno erro troca a classe. Em ML, isso significa que os erros esperados se concentram nas fronteiras entre classes vizinhas (hipótese que a Fase 06 testa).
+**Armadilha.** A classe é discreta, mas a temperatura é contínua. Uma estrela com $\large T_{\text{eff}}\approx5200$ K está na fronteira G/K e qualquer pequeno erro troca a classe. Em ML, isso significa que os erros esperados se concentram nas fronteiras entre classes vizinhas.
 
 ---
 ## Os catálogos como instrumentos
@@ -302,7 +328,7 @@ A tabela `gaia_source` traz esses dados; a `astrophysical_parameters` traz parâ
 
 Levantamento no infravermelho próximo, em $\large J$, $\large H$ e $\large K_s$ (aproximadamente 1,25, 1,65 e 2,16 μm). A luz infravermelha é menos afetada pela poeira. O "vizinho 2MASS" é a tabela de correspondência já pronta do Gaia que associa cada estrela do Gaia à contraparte 2MASS mais provável, por posição.
 
-"The Two Micron All-Sky Survey was an astronomical survey of the whole sky in infrared light. It took place between 1997 and 2001, in two different locations: at the U.S. Fred Lawrence Whipple Observatory on Mount Hopkins, Arizona, and at the Cerro Tololo Inter-American Observatory in Chile, each using a 1.3-meter telescope for the Northern and Southern Hemisphere, respectively"
+*"The Two Micron All-Sky Survey was an astronomical survey of the whole sky in infrared light. It took place between 1997 and 2001, in two different locations: at the U.S. Fred Lawrence Whipple Observatory on Mount Hopkins, Arizona, and at the Cerro Tololo Inter-American Observatory in Chile, each using a 1.3-meter telescope for the Northern and Southern Hemisphere, respectively"*
 
 | ![[2mass2.jpg]] |
 | --------------- |
@@ -316,24 +342,21 @@ Levantamento espectroscópico em baixa resolução (resolução $\large R\sim180
 
 ![[lamost.jpg]]
 
-
 **O cross-match LAMOST ↔ Gaia.** Usar o ID publicado ou casar por posição. A dificuldade física está no **movimento próprio**: as posições do Gaia são dadas para a época 2016,0, enquanto as do LAMOST podem se referir a outra época. Uma estrela com movimento próprio de 100 mas/ano desloca-se $\large 100\times16 = 1600$ mas $\large =1{,}6''$ em 16 anos. Se o raio de busca for menor que isso, a estrela é perdida. Se for grande demais, aumentam os falsos pareamentos em campos densos.
 
 **Seleção e vieses.** Nenhum desses catálogos é uma amostra "justa" do céu. O LAMOST tem uma região do céu e um limite de brilho e prioriza certos tipos de alvo. O Gaia tem seu limite de completude. Isso afeta a proporção das classes (por exemplo, muito mais K e G do que O e B) e pode induzir correlações espúrias entre magnitude aparente e classe.
-
-**Armadilha.** `teff_gspphot` não é uma medida direta. É uma estimativa por modelo que usa fotometria Gaia, a mesma informação que o classificador do projeto usa como feature. Isso torna o *baseline* do ROADMAP (classe prevista por faixa de Teff) parcialmente circular: é modelo contra modelo, ambos alimentados por cores semelhantes. Vale ter isso em mente ao interpretar a comparação.
 
 ---
 ## Qualidade de dados: o que é "dado ruim" fisicamente
 
 **Intuição.** Os cortes de qualidade existem porque cada um elimina uma fonte física de erro que corromperia as features.
 
-**`parallax_over_error`.** Já visto na seção 4: elimina distâncias pouco confiáveis, logo magnitudes absolutas ruins.
+- **`parallax_over_error`.** Já visto na seção 4: elimina distâncias pouco confiáveis, logo magnitudes absolutas ruins.
 
-**RUWE (*Renormalised Unit Weight Error*).** Mede o quão bem um modelo de estrela *única* ajusta as observações astrométricas. Em torno de 1 é um bom ajuste. Valores acima de aproximadamente 1,4 costumam ser tomados como suspeitos. O motivo físico mais comum é uma **companheira não resolvida** (binária): o fotocentro oscila, e a paralaxe e as cores podem estar contaminadas.
+- **RUWE (*Renormalised Unit Weight Error*).** Mede o quão bem um modelo de estrela *única* ajusta as observações astrométricas. Em torno de 1 é um bom ajuste. Valores acima de aproximadamente 1,4 costumam ser tomados como suspeitos. O motivo físico mais comum é uma **companheira não resolvida** (binária): o fotocentro oscila, e a paralaxe e as cores podem estar contaminadas.
 
-**Qualidade fotométrica do 2MASS.** Cada medida vem com um sinalizador de qualidade (de A, melhor, a classes piores), refletindo sinal-ruído, contaminação por vizinhas e saturação. Cores $\large J-H$ ou $\large H-K_s$ com qualidade ruim injetam ruído nas features.
+- **Qualidade fotométrica do 2MASS.** Cada medida vem com um sinalizador de qualidade (de A, melhor, a classes piores), refletindo sinal-ruído, contaminação por vizinhas e saturação. Cores $\large J-H$ ou $\large H-K_s$ com qualidade ruim injetam ruído nas features.
 
-**Armadilha.** Cortes de qualidade **mudam a amostra**, e não só a limpam. Exigir `parallax_over_error` alto privilegia estrelas próximas e brilhantes; exigir RUWE baixo remove binárias. O modelo final só vale para o tipo de estrela que sobreviveu aos cortes, e é por isso que o ROADMAP pede que os cortes sejam documentados e justificados.
+- **Armadilha.** Cortes de qualidade **mudam a amostra**, e não só a limpam. Exigir `parallax_over_error` alto privilegia estrelas próximas e brilhantes; exigir RUWE baixo remove binárias. O modelo final só vale para o tipo de estrela que sobreviveu aos cortes, e é por isso que o ROADMAP pede que os cortes sejam documentados e justificados.
 
 ---

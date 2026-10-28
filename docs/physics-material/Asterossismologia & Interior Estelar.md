@@ -1,7 +1,6 @@
 
 Este arquivo cobre a física "por dentro" da estrela: como ondas que atravessam o interior nos contam a massa, o raio e o estágio evolutivo (Trilho B), e como se descreve matematicamente a estrutura interna que a Fase 07 pretende visualizar. 
 
-
 Constantes solares usadas nos exemplos: $\large T_{\text{eff},\odot}=5772$ K, $\large \nu_{\max,\odot}\approx3090\ \mu\text{Hz}$, $\large \Delta\nu_\odot\approx135{,}1\ \mu\text{Hz}$, $\large \log g_\odot = 4{,}438$ (cgs).
 
 ---
@@ -63,7 +62,7 @@ onde $\large N$ é a frequência de Brunt-Väisälä, que mede a estabilidade à
 
 **Exemplo.** Para $\large \ell=1$ o termo fica $\large 2\pi^2/\sqrt2$; o espaçamento $\large \Delta\Pi_1$ é da ordem de dezenas a centenas de segundos para gigantes, como veremos na seção 5.
 
-**Armadilha.** O ROADMAP lista $\large \nu_{\max}$ e $\large \Delta\nu$ como features, e ambos vêm dos modos p. A informação sobre o **núcleo** (que é o que de fato distingue RGB de RC) está em $\large \Delta\Pi_1$, que vem dos modos mistos e não está na lista de features candidatas. Voltaremos a isso na seção 5.
+**Armadilha.** Os parâmetros $\large \nu_{\max}$ e $\large \Delta\nu$ são features, e ambos vêm dos modos p. A informação sobre o **núcleo** (que é o que de fato distingue RGB de RC) está em $\large \Delta\Pi_1$, que vem dos modos mistos e não está na lista de features candidatas. Voltaremos a isso na seção 5.
 
 ---
 ## Os dois números centrais: $\large \nu_{\max}$ e $\large \Delta\nu$

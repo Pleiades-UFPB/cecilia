@@ -33,7 +33,7 @@ $$
 
 **Exemplo.** Em 1000 estrelas, 100 sem $\large J-H$. Remover reduz a amostra em 10%, mas pode eliminar justamente as estrelas mais fracas, cuja fotometria é pior (viés de seleção). Imputar mantém a amostra, e o preço é preencher com um número que a estrela não tem. Uma técnica comum é adicionar uma coluna indicadora ("este valor foi imputado"), para que o modelo possa usar a própria ausência como informação.
 
-**Armadilha.** A média (ou qualquer valor de imputação) deve ser calculada **só com os dados de treino**. Calcular com todos os dados já é vazamento (seção 2.3).
+**Armadilha.** A média (ou qualquer valor de imputação) deve ser calculada **só com os dados de treino**. Calcular com todos os dados já é vazamento, como veremos.
 
 ### Partição treino / validação / teste
 
@@ -43,7 +43,7 @@ $$
 
 **Exemplo.** Se a classe M é 3% dos dados, uma divisão aleatória simples pode deixar o teste com 1% ou 5% de M, o que torna as métricas instáveis. Estratificar corrige isso.
 
-### Vazamento de dados (*data leakage*)
+#### Vazamento de dados (*data leakage*)
 
 **Intuição.** Vazamento é qualquer caminho pelo qual informação do teste (ou da resposta) entra no treino, inflando artificialmente o desempenho.
 
@@ -59,11 +59,13 @@ $$
 ---
 ## Baseline: o ponto de comparação
 
-**Intuição.** Um modelo só é bom em relação a alguma outra coisa. O *baseline* é a alternativa mais simples que alguém poderia usar.
+**Intuição.** Um modelo só é bom em relação a alguma outra coisa. O *baseline* é a alternativa mais simples que alguém poderia usar. 
+
+Isso implica na necessidade de ter um artigo, um projeto no qual se pode comparar a performance. Alguns artigos foram compilados (ver `docs/REFERENCIAS.md`), portanto, o trabalho que temos é de ler o material, analisar o método e comparar ambos resultados com uma comparação justa.
 
 **Exemplo numérico.** Se 60% das estrelas da amostra são K, um "modelo" que responde sempre "K" tem 60% de acurácia sem aprender nada. Um modelo de ML com 65% só ganhou 5 pontos sobre o trivial. Os baselines do ROADMAP são mais informativos: no Trilho A, a classe prevista por faixas de Teff; no Trilho B, um corte simples no plano νmax–Δν ou Teff–log g.
 
-**Insight.** No Trilho A, como a classe é quase uma função monótona de Teff (arquivo 01, seção 8), o baseline é forte para anãs "bem comportadas". O ganho do ML deve aparecer onde a regra simples falha: estrelas avermelhadas, gigantes, estrelas perto das fronteiras entre classes.
+**Insight.** No Trilho A, como a classe é quase uma função monótona de Teff, o baseline é forte para anãs "bem comportadas". O ganho do ML deve aparecer onde a regra simples falha: estrelas avermelhadas, gigantes, estrelas perto das fronteiras entre classes.
 
 **Armadilha.** Se o ML não supera o baseline com folga, essa também é uma conclusão científica legítima, e não um fracasso a esconder.
 
@@ -71,8 +73,6 @@ $$
 ## Árvores de Decisão
 
 **Intuição.** Uma árvore faz perguntas de sim/não sobre as features ("BP−RP < 1,0?") até chegar a um grupo de estrelas parecidas. Cada pergunta é escolhida para separar as classes da melhor forma possível.
-
-**Analogia.** O jogo das vinte perguntas. A boa estratégia é fazer primeiro as perguntas que mais eliminam possibilidades.
 
 **Formalização.** A "pureza" de um nó é medida pela **impureza de Gini** (ou pela entropia). Se $\large p_k$ é a fração de estrelas da classe $\large k$ no nó:
 
@@ -86,6 +86,8 @@ $$
 \huge \Delta G = G_{\text{pai}} - \left(\frac{n_E}{n}\,G_E + \frac{n_D}{n}\,G_D\right)
 $$
 
+![[decision_trees.png]]
+
 **Exemplo numérico.** Um nó com 100 estrelas, 50 G e 50 K: $\large G = 1-(0{,}5^2+0{,}5^2)=0{,}5$. Um corte em BP−RP gera:
 
 - Esquerda: 50 estrelas, 40 G e 10 K, então $\large G_E = 1-(0{,}8^2+0{,}2^2)=0{,}32$.
@@ -98,9 +100,9 @@ O ganho é $\large 0{,}5-(0{,}5\cdot0{,}32+0{,}5\cdot0{,}32)=0{,}18$. A árvore 
 
 **Intuição.** Em vez de confiar numa árvore instável, treina-se centenas de árvores, cada uma vendo uma versão ligeiramente diferente dos dados, e elas **votam**. Os erros individuais tendem a se cancelar.
 
-**Analogia.** A sabedoria das multidões: a média das estimativas de muitas pessoas independentes costuma ser melhor que a da maioria delas.
-
 **Formalização.** Cada árvore é treinada numa amostra *bootstrap* (sorteio com reposição de $\large N$ exemplos) e, em cada corte, só considera um subconjunto aleatório das features. A classe final é o voto da maioria.
+
+![[random_forest.png]]
 
 Por que funciona? Suponha $\large B$ árvores, cada uma com variância $\large \sigma^2$ e correlação média $\large \rho$ entre elas. A variância da média é
 
@@ -129,6 +131,8 @@ $$
 $$
 
 A nova árvore é ajustada ao **gradiente negativo da perda** em relação à predição atual. Para a perda quadrática, isso é exatamente o resíduo $\large y-F_{m-1}$ (daí o nome "gradient").
+
+![[gradient_boosting.png]]
 
 O XGBoost refina a ideia: otimiza uma função objetivo que inclui uma **penalização de complexidade** e usa aproximação de segunda ordem da perda:
 
@@ -163,8 +167,9 @@ O resíduo médio seria 2, mas a folha prediz 1,5: o termo $\large \lambda$ **en
 ---
 ## Desbalanceamento de Classes
 
-
 **Intuição.** Quando uma classe é muito mais rara que as outras, o modelo pode "ignorá-la" sem pagar quase nada na perda.
+
+![[class_imbalance.png]]
 
 **Exemplo numérico (o paradoxo da acurácia).** Se 99% das estrelas são da classe A e 1% da classe B, um modelo que responde sempre A tem **99% de acurácia** e zero capacidade de achar B. No catálogo LAMOST, classes como O e B são raras em comparação com F, G e K, então esse risco é real.
 
@@ -213,6 +218,16 @@ $$
 
 **Intuição.** O modelo dá uma probabilidade para cada estrela. Variando o limiar de decisão (de "só aceito se for 0,99" até "aceito qualquer 0,01"), obtém-se um par (recall, precisão) para cada limiar. A curva resultante mostra todo o compromisso de uma vez.
 
+### ROC 
+
+A curva ROC (_Receiver Operating Characteristic_) é um gráfico usado para avaliar o desempenho de um modelo de classificação binária (como um modelo que prevê "Sim/Não" ou "Positivo/Negativo") em **diferentes limiares (_thresholds_) de decisão**.
+
+- **Eixo Y — Taxa de Verdadeiros Positivos (Sensibilidade / _Recall_):** A proporção de casos positivos reais que o modelo identificou corretamente.
+
+- **Eixo X — Taxa de Falsos Positivos ($1 - \text{Especificidade}$):** A proporção de casos negativos reais que o modelo classificou erradamente como positivos.
+
+![[ROC.png|373]]
+
 **Por que PR e não ROC.** Para classes raras, a curva ROC pode parecer ótima mesmo com muitos falsos positivos, porque o número enorme de negativos verdadeiros "dilui" a taxa de falsos positivos. A curva PR olha só para o que o modelo chamou de positivo, e por isso é mais honesta. Uma referência útil: a precisão de um classificador aleatório numa curva PR é igual à **prevalência** da classe (se a classe é 1%, o chute vale 0,01).
 
 ### 5. Regressão (Trilho B, exercício opcional)
@@ -249,11 +264,9 @@ A variação entre as $\large k$ avaliações dá uma noção da estabilidade do
 **Armadilha.** A validação cruzada estima o desempenho para dados **da mesma distribuição** que a amostra. Não diz nada sobre como o modelo se comporta em outro levantamento, com outra seleção de estrelas. E a dispersão entre *folds* subestima a incerteza real, porque os *folds* compartilham dados de treino.
 
 ---
-
 ## Interpretação com SHAP e confundidores
 
-
-**Intuição.** Depois de treinar, queremos saber **por que** o modelo previu o que previu, e quais features pesam mais. O SHAP responde atribuindo a cada feature uma contribuição para cada previsão individual.
+**Intuição.** Depois de treinar, queremos saber **por que** o modelo previu o que previu, e quais features pesam mais. O teste SHAP responde atribuindo a cada feature uma contribuição para cada previsão individual.
 
 **Analogia.** Três sócios geram um lucro juntos. Como dividir o prêmio de forma justa? A ideia de Shapley: para cada sócio, calcule o quanto ele acrescenta ao lucro quando entra em cada ordem possível de chegada, e tire a média.
 
