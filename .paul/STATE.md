@@ -17,13 +17,13 @@ See: .paul/PROJECT.md (updated 2026-10-04)
 
 Milestone: v0.1 Pipeline completo (v0.1.0)
 Phase: 2.5 of 8 (Acesso remoto aos dados) — In Progress
-Plan: 02.5-01 complete (1 de 4 previstos)
-Status: Ready for next PLAN (02.5-02)
-Last activity: 2026-11-04 15:38 — UNIFY 02.5-01, loop closed
+Plan: 02.5-02 complete (2 de 4 previstos)
+Status: Ready for next PLAN (02.5-03)
+Last activity: 2026-11-04 16:32 — UNIFY 02.5-02, loop closed
 
 Progress:
 - Milestone: [░░░░░░░░░░] 5%
-- Phase 02.5: [██░░░░░░░░] 25%
+- Phase 02.5: [█████░░░░░] 50%
 
 ## Loop Position
 
@@ -50,15 +50,20 @@ PLAN ──▶ APPLY ──▶ UNIFY
 - 02.5-01 concluído: blob store endereçado por SHA-256, manifesto imutável, catálogo e CLI `cecilia admin`
 - Typer adotado para a CLI com `Annotated`; `rich` entrou como dependência transitiva, não como API
 - Fase 02.5 usa branch de integração `feat/remoteAccess`: cada plano entra nela por PR e a fase entra na `main` por um PR único (desvio consciente do fluxo plano→main)
+- 02.5-02 concluído: servidor FastAPI somente leitura com chave HMAC, Range/ETag, auditoria e limites
+- Admin continua local (sem `/v1/admin`); o servidor só lê blobs e escreve chaves/auditoria
+- Limite global só para requisições sem Bearer; tráfego autenticado usa limite por chave
+- fastapi, uvicorn e anyio nas dependências principais; httpx no grupo dev
 
 ### Deferred Issues
 | Issue | Origin | Effort | Revisit |
 |-------|--------|--------|---------|
 | PendingDeprecationWarning do shap ao importar | 01-01 | S | Ao atualizar shap/matplotlib |
 | Tornar check "CI" obrigatório na proteção da main | 01-01 | S | Após primeiro run verde |
-| Confirmar disco (SSD/HDD) do servidor do lab | 02.5-01 | S | Antes do benchmark do 02.5-02 |
-| Verificar IP de origem atrás do `tailscale serve` | 02.5-01 | S | 02.5-02 (auditoria) |
+| Confirmar disco (SSD/HDD) do servidor do lab | 02.5-01 | S | Antes do benchmark do 02.5-04 |
+| Verificar IP de origem atrás do `tailscale serve` | 02.5-01 | S | 02.5-04 (auditoria) |
 | Fechar nome dos datasets e raiz do servidor | 02.5-01 | S | 02.5-04 (operação) |
+| Aviso de depreciação do TestClient sobre `httpx2` | 02.5-02 | S | Ao atualizar Starlette/FastAPI |
 
 ### Blockers/Concerns
 | Blocker | Impact | Resolution Path |
@@ -67,10 +72,10 @@ PLAN ──▶ APPLY ──▶ UNIFY
 
 ## Session Continuity
 
-Last session: 2026-11-04 15:38
-Stopped at: 02.5-01 concluído (núcleo de publicação, verify e gc)
-Next action: /paul:plan para 02.5-02 (servidor HTTP com auth, blobs e auditoria)
-Resume file: .paul/phases/02.5-acesso-remoto/02.5-01-SUMMARY.md
+Last session: 2026-11-04 16:32
+Stopped at: 02.5-02 concluído (servidor HTTP, chaves, auditoria e limites)
+Next action: /paul:plan para 02.5-03 (cliente remoto: login, list, sync, verify)
+Resume file: .paul/phases/02.5-acesso-remoto/02.5-02-SUMMARY.md
 
 ---
 *STATE.md — Updated after every significant action*

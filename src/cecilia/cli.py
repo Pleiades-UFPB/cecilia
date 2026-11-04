@@ -2,16 +2,20 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Annotated, NoReturn
 
 import typer
 
+from .remote.audit import AuditLog, parse_since
+from .remote.auth import KeyStore
 from .remote.catalog import rebuild_catalog
 from .remote.errors import RemoteError
 from .remote.gc import collect_garbage
 from .remote.layout import ServerLayout
 from .remote.publish import publish
+from .remote.settings import MIN_PEPPER_LENGTH, Settings
 from .remote.verify import verify
 
 app = typer.Typer(no_args_is_help=True, help="Ferramentas do projeto CECILIA.")
@@ -30,6 +34,12 @@ RootOption = Annotated[
     ),
 ]
 
+key_app = typer.Typer(
+    no_args_is_help=True,
+    help="Emissão, listagem e revogação de chaves.",
+)
+admin_app.add_typer(key_app, name="key")
+
 
 def _layout(root: Path | None) -> ServerLayout:
     return ServerLayout.resolve(root)
@@ -38,6 +48,28 @@ def _layout(root: Path | None) -> ServerLayout:
 def _fail(exc: RemoteError) -> NoReturn:
     typer.echo(f"erro: {exc}", err=True)
     raise typer.Exit(code=1)
+
+
+def _pepper() -> str:
+    pepper = os.environ.get("CECILIA_KEY_PEPPER", "")
+    if len(pepper) < MIN_PEPPER_LENGTH:
+        _fail(
+            RemoteError(
+                f"CECILIA_KEY_PEPPER ausente ou curta (mínimo {MIN_PEPPER_LENGTH} caracteres)"
+            )
+        )
+    return pepper
+
+
+def _human_bytes(value: int) -> str:
+    tamanho = float(value)
+    for unidade in ("B", "KB", "MB", "GB", "TB"):
+        if tamanho < 1024 or unidade == "TB":
+            if unidade == "B":
+                return f"{tamanho:.0f} B"
+            return f"{tamanho:.1f} {unidade}"
+        tamanho /= 1024
+    return f"{tamanho:.1f} TB"
 
 
 @admin_app.command("publish")
@@ -154,6 +186,140 @@ def catalog_command(root: RootOption = None) -> None:
     typer.echo(
         f"catálogo reconstruído: {len(catalogo['datasets'])} dataset(s), {versoes} versão(ões)"
     )
+
+
+@admin_app.command("log")
+def log_command(
+    root: RootOption = None,
+    since: Annotated[
+        str,
+        typer.Option("--since", help="Período: 7d, 24h ou data ISO."),
+    ] = "7d",
+    alias: Annotated[
+        str | None,
+        typer.Option("--alias", help="Filtra por apelido."),
+    ] = None,
+    limit: Annotated[
+        int,
+        typer.Option("--limit", help="Máximo de linhas."),
+    ] = 50,
+) -> None:
+    """Mostra os acessos registrados, do mais recente para o mais antigo."""
+    try:
+        desde = parse_since(since)
+    except RemoteError as exc:
+        _fail(exc)
+
+    registros = AuditLog(_layout(root)).recent(limit=limit, since=desde, alias=alias)
+    if not registros:
+        typer.echo("nenhum acesso no período")
+        return
+
+    typer.echo("QUANDO\tALIAS\tACAO\tDATASET\tARQUIVO\tBYTES\tSTATUS")
+    total = 0
+    for registro in registros:
+        bytes_enviados = int(registro["bytes_sent"])
+        total += bytes_enviados
+        arquivo = str(registro["file"] or registro["blob"] or "-")
+        if len(arquivo) > 40:
+            arquivo = arquivo[:37] + "..."
+        typer.echo(
+            "\t".join(
+                [
+                    str(registro["ts"]),
+                    str(registro["alias"] or "-"),
+                    str(registro["action"]),
+                    str(registro["dataset"] or "-"),
+                    arquivo,
+                    _human_bytes(bytes_enviados),
+                    str(registro["status"]),
+                ]
+            )
+        )
+    typer.echo(f"{len(registros)} acesso(s), {_human_bytes(total)} no total")
+
+
+@key_app.command("create")
+def key_create(
+    alias: Annotated[str, typer.Option("--alias", help="Apelido da pessoa.")],
+    root: RootOption = None,
+    days: Annotated[
+        int,
+        typer.Option("--days", help="Validade da chave em dias."),
+    ] = 90,
+) -> None:
+    """Emite uma chave nova; o token aparece uma única vez."""
+    try:
+        emitida = KeyStore(_layout(root), _pepper()).create(alias, days)
+    except RemoteError as exc:
+        _fail(exc)
+    typer.echo(f"key_id: {emitida.key_id}")
+    typer.echo(f"alias: {emitida.alias}")
+    typer.echo(f"expira: {emitida.expires_at}")
+    typer.echo(f"token: {emitida.token}")
+    typer.echo("guarde o token agora: ele não será exibido de novo.")
+
+
+@key_app.command("list")
+def key_list(root: RootOption = None) -> None:
+    """Lista as chaves emitidas, sem mostrar segredos."""
+    chaves = KeyStore(_layout(root)).list()
+    if not chaves:
+        typer.echo("nenhuma chave emitida")
+        return
+    typer.echo("KEY_ID\tALIAS\tCRIADA\tEXPIRA\tREVOGADA\tULTIMO_USO")
+    for chave in chaves:
+        typer.echo(
+            "\t".join(
+                [
+                    chave.key_id,
+                    chave.alias,
+                    chave.created_at,
+                    chave.expires_at,
+                    chave.revoked_at or "-",
+                    chave.last_used_at or "-",
+                ]
+            )
+        )
+
+
+@key_app.command("revoke")
+def key_revoke(
+    key_id: Annotated[str, typer.Argument(help="key_id da chave a revogar.")],
+    root: RootOption = None,
+) -> None:
+    """Revoga uma chave imediatamente."""
+    if KeyStore(_layout(root)).revoke(key_id):
+        typer.echo(f"chave {key_id} revogada")
+    else:
+        typer.echo(f"erro: chave {key_id} não encontrada ou já revogada", err=True)
+        raise typer.Exit(code=1)
+
+
+@app.command("serve")
+def serve_command(
+    host: Annotated[
+        str,
+        typer.Option("--host", help="Endereço de escuta."),
+    ] = "127.0.0.1",
+    port: Annotated[
+        int,
+        typer.Option("--port", help="Porta HTTP."),
+    ] = 8000,
+    root: RootOption = None,
+) -> None:
+    """Sobe o servidor HTTP (deixe o TLS para o tailscale serve)."""
+    try:
+        settings = Settings.from_env(root)
+    except RemoteError as exc:
+        _fail(exc)
+
+    import uvicorn
+
+    from .remote.server import create_app
+
+    typer.echo(f"servindo em http://{host}:{port}")
+    uvicorn.run(create_app(settings), host=host, port=port, log_level="info")
 
 
 def main() -> None:
