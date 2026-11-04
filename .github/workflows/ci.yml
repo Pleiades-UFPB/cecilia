@@ -1,12 +1,13 @@
-# CI do CECILIA: roda em todo PR para a main e em todo push na main.
+# CI do CECILIA: roda em PR e push para a main e para a branch de integração.
+# A entrada feat/remoteAccess sai quando a fase 02.5 for integrada à main.
 # Executa exatamente os mesmos comandos que cada aluno roda localmente.
 name: CI
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, feat/remoteAccess]
   push:
-    branches: [main]
+    branches: [main, feat/remoteAccess]
 
 jobs:
   testes:
