@@ -13,7 +13,7 @@ Do repositório vazio ao pipeline completo: fundação → aquisição de dados 
 ## Current Milestone
 **v0.1 Pipeline completo** (v0.1.0)
 Status: 🚧 In Progress
-Phases: 0 of 7 complete
+Phases: 0 of 8 complete
 
 ## Phases
 
@@ -27,6 +27,7 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 |-------|------|-------|--------|-----------|
 | 1 | Fundação | 1/3 | In progress | - |
 | 2 | Aquisição de dados | TBD | Not started | - |
+| 2.5 | Acesso remoto aos dados | TBD | Not started | - |
 | 3 | Limpeza e features | TBD | Not started | - |
 | 4 | Classificação espectral (Trilho A) | TBD | Not started | - |
 | 5 | Asterossismologia (Trilho B) | TBD | Not started | - |
@@ -63,6 +64,25 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 - Trilho A: `gaiadr3.gaia_source` + `gaiadr3.astrophysical_parameters` + vizinho 2MASS; LAMOST LRS com classes espectrais; cross-match
 - Trilho B: catálogo APOKASC-3
 - Manifesto em `data/README.md`; agradecimentos de cada fonte no README
+
+**Plans:** TBD (defined during /paul:plan)
+
+### Phase 2.5: Acesso remoto aos dados [INSERTED]
+
+**Goal:** Distribuir os datasets Parquet versionados do PC do laboratório para as máquinas dos contribuidores, com autenticação, integridade e auditoria.
+**Depends on:** Phase 2 (dados brutos adquiridos) e servidor do laboratório na tailnet
+**Research:** Likely (disco do servidor, throughput Tailscale, headers de IP atrás do `tailscale serve`)
+
+**Scope:**
+- Blob store content-addressed, manifesto por dataset/versão e catálogo
+- Servidor FastAPI somente leitura de blobs, com chave de API e auditoria
+- CLI `cecilia remote` (login, list, sync, get, verify) e `cecilia admin` (publish, key, log, gc)
+- Operação: systemd, `tailscale serve`, ACL da tailnet, documentação
+
+**Decisões:**
+- Sem banco de dados de dados e sem consulta no servidor; DuckDB lê Parquet no cliente
+- Admin local no servidor (sem rotas `/v1/admin`)
+- Chave HMAC-SHA256 com pepper, expiração de 90 dias; auditoria com alias + IP por 90 dias
 
 **Plans:** TBD (defined during /paul:plan)
 
@@ -146,4 +166,4 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 
 ---
 *Roadmap created: 2026-10-04*
-*Last updated: 2026-10-04*
+*Last updated: 2026-11-04*

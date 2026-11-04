@@ -41,6 +41,21 @@ Then o plano anterior tem SUMMARY.md e o STATE.md está atualizado
 **AC-02.2** Given cada arquivo em `data/raw/`, When o manifesto é consultado, Then registra origem, consulta/URL, data e número de linhas.
 **AC-02.3** Given o cross-match do Trilho A, When concluído, Then a taxa de associação e o número de fontes por classe espectral são reportados.
 
+## Fase 02.5 — Acesso remoto
+
+**AC-02.5.1** Given um dataset publicado, When `cecilia remote list` é executado, Then mostra nome, versão, bytes e hash do manifesto.
+**AC-02.5.2** Given uma chave válida, When `cecilia remote sync` é executado, Then cada arquivo local tem SHA-256 igual ao manifesto e a linha correspondente é emitida para `data/README.md`.
+**AC-02.5.3** Given chave inválida, expirada ou revogada, When qualquer download é solicitado, Then a resposta é 401/403, nenhum byte de dado é servido e a tentativa é registrada.
+**AC-02.5.4** Given um download interrompido, When o comando é repetido, Then a transferência retoma sem rebaixar o restante e o hash final confere.
+**AC-02.5.5** Given N clientes baixando simultaneamente, When a transferência termina, Then todos os hashes conferem e o throughput agregado atinge o mínimo definido no plano 02.5-01.
+**AC-02.5.6** Given `cecilia admin log`, When consultado no servidor, Then lista apelido, dataset, arquivo, bytes e horário dos últimos acessos.
+**AC-02.5.7** Given um caminho com `..`, um blob inexistente ou um dataset desconhecido, When a requisição é feita, Then é rejeitada, nada fora de `/srv/cecilia/blobs` é servido e o evento é registrado.
+**AC-02.5.8** Given o dataset B publicado, When `cecilia remote sync` de B é executado, Then blobs já presentes por A não são rebaixados.
+**AC-02.5.9** Given o cliente configurado, When ele se conecta ao servidor, Then valida o certificado TLS por padrão e não desativa a verificação sem aviso explícito.
+**AC-02.5.10** Given a publicação de `v2`, When o catálogo é consultado, Then `v1` continua acessível até retirada explícita e `v2` registra `supersedes`.
+**AC-02.5.11** Given uma chave com mais de 90 dias, When ela é usada, Then a autenticação falha com mensagem de rotação e o evento é registrado.
+**AC-02.5.12** Given o serviço em execução, When a superfície é inspecionada, Then não existe rota administrativa exposta na rede e o processo não consegue escrever em `/srv/cecilia/blobs`.
+
 ## Fase 03 — Limpeza e features
 
 **AC-03.1** Given os cortes de qualidade, When aplicados, Then cada corte reporta quantas fontes removeu e por quê.

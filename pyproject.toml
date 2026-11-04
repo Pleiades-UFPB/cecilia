@@ -17,7 +17,11 @@ dependencies = [
     "shap",
     "matplotlib",
     "plotly",
+    "typer",
 ]
+
+[project.scripts]
+cecilia = "cecilia.cli:main"
 
 [dependency-groups]
 dev = ["pytest", "ruff", "jupyterlab"]
