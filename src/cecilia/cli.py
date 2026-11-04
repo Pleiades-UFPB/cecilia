@@ -11,7 +11,9 @@ import typer
 from .remote.audit import AuditLog, parse_since
 from .remote.auth import KeyStore
 from .remote.catalog import rebuild_catalog
+from .remote.cli import remote_app
 from .remote.errors import RemoteError
+from .remote.format import human_bytes
 from .remote.gc import collect_garbage
 from .remote.layout import ServerLayout
 from .remote.publish import publish
@@ -24,6 +26,7 @@ admin_app = typer.Typer(
     help="Administração local do servidor de datasets (rodar no servidor).",
 )
 app.add_typer(admin_app, name="admin")
+app.add_typer(remote_app, name="remote")
 
 RootOption = Annotated[
     Path | None,
@@ -59,17 +62,6 @@ def _pepper() -> str:
             )
         )
     return pepper
-
-
-def _human_bytes(value: int) -> str:
-    tamanho = float(value)
-    for unidade in ("B", "KB", "MB", "GB", "TB"):
-        if tamanho < 1024 or unidade == "TB":
-            if unidade == "B":
-                return f"{tamanho:.0f} B"
-            return f"{tamanho:.1f} {unidade}"
-        tamanho /= 1024
-    return f"{tamanho:.1f} TB"
 
 
 @admin_app.command("publish")
@@ -231,12 +223,12 @@ def log_command(
                     str(registro["action"]),
                     str(registro["dataset"] or "-"),
                     arquivo,
-                    _human_bytes(bytes_enviados),
+                    human_bytes(bytes_enviados),
                     str(registro["status"]),
                 ]
             )
         )
-    typer.echo(f"{len(registros)} acesso(s), {_human_bytes(total)} no total")
+    typer.echo(f"{len(registros)} acesso(s), {human_bytes(total)} no total")
 
 
 @key_app.command("create")
