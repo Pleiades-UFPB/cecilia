@@ -49,6 +49,7 @@ PLAN ──▶ APPLY ──▶ UNIFY
 - Fase 1 pausada no plano 01-02; retomar após a fase 02.5 ou por decisão do grupo
 - 02.5-01 concluído: blob store endereçado por SHA-256, manifesto imutável, catálogo e CLI `cecilia admin`
 - Typer adotado para a CLI com `Annotated`; `rich` entrou como dependência transitiva, não como API
+- Fase 02.5 usa branch de integração `feat/remoteAccess`: cada plano entra nela por PR e a fase entra na `main` por um PR único (desvio consciente do fluxo plano→main)
 
 ### Deferred Issues
 | Issue | Origin | Effort | Revisit |
