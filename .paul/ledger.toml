@@ -59,3 +59,21 @@ action = "unify"
 phase = 2.5
 plan = "02.5-02"
 at = "2026-11-04T16:32:00-03:00"
+
+[[entry]]
+action = "plan"
+phase = 2.5
+plan = "02.5-03"
+at = "2026-11-04T16:45:00-03:00"
+
+[[entry]]
+action = "apply"
+phase = 2.5
+plan = "02.5-03"
+at = "2026-11-04T16:45:00-03:00"
+
+[[entry]]
+action = "unify"
+phase = 2.5
+plan = "02.5-03"
+at = "2026-11-04T16:25:00-03:00"

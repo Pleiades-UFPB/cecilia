@@ -87,7 +87,7 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 **Plans:**
 - [x] 02.5-01: Núcleo de publicação e catálogo
 - [x] 02.5-02: Servidor HTTP com auth, Range e auditoria
-- [ ] 02.5-03: Cliente remoto (login, list, sync, verify)
+- [x] 02.5-03: Cliente remoto (login, list, sync, verify)
 - [ ] 02.5-04: Operação, documentação e benchmark
 
 ### Phase 3: Limpeza e features

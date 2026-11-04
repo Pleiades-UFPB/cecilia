@@ -9,5 +9,9 @@ class ValidationError(RemoteError):
     """Nome, versão, blob ou caminho fora do contrato."""
 
 
+class ClientError(RemoteError):
+    """Falha do cliente remoto (configuração, rede ou integridade)."""
+
+
 class PublishError(RemoteError):
     """Falha ao publicar um dataset."""
