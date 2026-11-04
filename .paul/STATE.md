@@ -17,13 +17,13 @@ See: .paul/PROJECT.md (updated 2026-10-04)
 
 Milestone: v0.1 Pipeline completo (v0.1.0)
 Phase: 2.5 of 8 (Acesso remoto aos dados) — In Progress
-Plan: 02.5-02 complete (2 de 4 previstos)
-Status: Ready for next PLAN (02.5-03)
-Last activity: 2026-11-04 16:32 — UNIFY 02.5-02, loop closed
+Plan: 02.5-03 complete (3 de 4 previstos)
+Status: Ready for next PLAN (02.5-04)
+Last activity: 2026-11-04 16:25 — UNIFY 02.5-03, loop closed
 
 Progress:
 - Milestone: [░░░░░░░░░░] 5%
-- Phase 02.5: [█████░░░░░] 50%
+- Phase 02.5: [███████░░░] 75%
 
 ## Loop Position
 
@@ -53,7 +53,11 @@ PLAN ──▶ APPLY ──▶ UNIFY
 - 02.5-02 concluído: servidor FastAPI somente leitura com chave HMAC, Range/ETag, auditoria e limites
 - Admin continua local (sem `/v1/admin`); o servidor só lê blobs e escreve chaves/auditoria
 - Limite global só para requisições sem Bearer; tráfego autenticado usa limite por chave
-- fastapi, uvicorn e anyio nas dependências principais; httpx no grupo dev
+- fastapi, uvicorn, anyio, httpx e rich nas dependências principais
+- 02.5-03 concluído: cliente com login, catálogo, sync retomável, verify e doctor
+- Sync deduplica blobs por hash; um único `.part` por conteúdo
+- Credenciais do cliente em arquivo 0600; chave nunca em argv; HTTP remoto recusado por padrão
+- Linhas do `data/README.md` são emitidas pelo sync, não gravadas automaticamente
 
 ### Deferred Issues
 | Issue | Origin | Effort | Revisit |
@@ -64,6 +68,7 @@ PLAN ──▶ APPLY ──▶ UNIFY
 | Verificar IP de origem atrás do `tailscale serve` | 02.5-01 | S | 02.5-04 (auditoria) |
 | Fechar nome dos datasets e raiz do servidor | 02.5-01 | S | 02.5-04 (operação) |
 | Aviso de depreciação do TestClient sobre `httpx2` | 02.5-02 | S | Ao atualizar Starlette/FastAPI |
+| Benchmark e throughput no servidor real | 02.5-03 | M | 02.5-04 |
 
 ### Blockers/Concerns
 | Blocker | Impact | Resolution Path |
@@ -72,10 +77,10 @@ PLAN ──▶ APPLY ──▶ UNIFY
 
 ## Session Continuity
 
-Last session: 2026-11-04 16:32
-Stopped at: 02.5-02 concluído (servidor HTTP, chaves, auditoria e limites)
-Next action: /paul:plan para 02.5-03 (cliente remoto: login, list, sync, verify)
-Resume file: .paul/phases/02.5-acesso-remoto/02.5-02-SUMMARY.md
+Last session: 2026-11-04 16:25
+Stopped at: 02.5-03 concluído (cliente remoto, sync e verify)
+Next action: /paul:plan para 02.5-04 (systemd, Tailscale Serve, docs e benchmark)
+Resume file: .paul/phases/02.5-acesso-remoto/02.5-03-SUMMARY.md
 
 ---
 *STATE.md — Updated after every significant action*
