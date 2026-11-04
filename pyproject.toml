@@ -18,13 +18,16 @@ dependencies = [
     "matplotlib",
     "plotly",
     "typer",
+    "fastapi",
+    "uvicorn",
+    "anyio",
 ]
 
 [project.scripts]
 cecilia = "cecilia.cli:main"
 
 [dependency-groups]
-dev = ["pytest", "ruff", "jupyterlab"]
+dev = ["pytest", "ruff", "jupyterlab", "httpx"]
 
 [build-system]
 requires = ["hatchling"]

@@ -50,6 +50,16 @@ def validate_relpath(path: str) -> str:
     return path
 
 
+def secure_db(path: Path) -> None:
+    """Restringe o banco e os arquivos WAL/SHM à leitura do dono."""
+    for sufixo in ("", "-wal", "-shm"):
+        candidato = Path(f"{path}{sufixo}")
+        try:
+            candidato.chmod(0o600)
+        except OSError:
+            continue
+
+
 @dataclass(frozen=True)
 class ServerLayout:
     """Diretórios do servidor de datasets."""
@@ -78,6 +88,14 @@ class ServerLayout:
     @property
     def catalog(self) -> Path:
         return self.root / "catalog.json"
+
+    @property
+    def keys_db(self) -> Path:
+        return self.root / "keys.sqlite"
+
+    @property
+    def audit_db(self) -> Path:
+        return self.root / "audit.sqlite"
 
     def dataset_dir(self, dataset: str, version: str) -> Path:
         return self.datasets / validate_dataset(dataset) / validate_version(version)
