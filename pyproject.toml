@@ -21,13 +21,15 @@ dependencies = [
     "fastapi",
     "uvicorn",
     "anyio",
+    "httpx",
+    "rich",
 ]
 
 [project.scripts]
 cecilia = "cecilia.cli:main"
 
 [dependency-groups]
-dev = ["pytest", "ruff", "jupyterlab", "httpx"]
+dev = ["pytest", "ruff", "jupyterlab"]
 
 [build-system]
 requires = ["hatchling"]
