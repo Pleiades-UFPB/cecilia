@@ -23,3 +23,21 @@ action = "unify"
 phase = 1
 plan = "01-01"
 at = "2026-10-04T11:10:40-03:00"
+
+[[entry]]
+action = "plan"
+phase = 3
+plan = "03-01"
+at = "2026-11-05T00:00:00-03:00"
+
+[[entry]]
+action = "apply"
+phase = 3
+plan = "03-01"
+at = "2026-11-05T18:00:00-03:00"
+
+[[entry]]
+action = "unify"
+phase = 3
+plan = "03-01"
+at = "2026-11-05T18:30:00-03:00"
