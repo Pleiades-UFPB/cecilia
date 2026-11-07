@@ -66,8 +66,11 @@ def histograma(s: pd.Series, linha: dict, destino: Path) -> None:
         ax.set_xscale("log")
     ax.set_xlabel(f"{s.name}  (faixa p01–p99; {fora:,} valores fora)")
     ax.set_ylabel("contagem")
-    ax.set_title(f"{s.name}: n={linha['n'] - linha['n_ausentes']:,}, "
-                 f"ausentes={100 * linha['frac_ausentes']:.1f}%", fontsize=10)
+    ax.set_title(
+        f"{s.name}: n={linha['n'] - linha['n_ausentes']:,}, "
+        f"ausentes={100 * linha['frac_ausentes']:.1f}%",
+        fontsize=10,
+    )
     fig.tight_layout()
     fig.savefig(destino, dpi=90, metadata={"Software": None})
     plt.close(fig)
@@ -79,14 +82,17 @@ def tabela_markdown(p: pd.DataFrame) -> str:
             return ""
         return f"{x:.4g}" if isinstance(x, float) else str(x)
 
-    linhas = ["| coluna | categoria | verificar | % ausentes | p01 | p50 | p99 | top |",
-              "|---|---|---|---|---|---|---|---|"]
+    linhas = [
+        "| coluna | categoria | verificar | % ausentes | p01 | p50 | p99 | top |",
+        "|---|---|---|---|---|---|---|---|",
+    ]
     for r in p.itertuples():
         top = r.top.replace("|", "/") if isinstance(r.top, str) else ""
         linhas.append(
             f"| `{r.coluna}` | {r.categoria} | {'sim' if r.verificar else ''} | "
             f"{100 * r.frac_ausentes:.1f} | {fmt(r.p01)} | {fmt(r.p50)} | {fmt(r.p99)} | "
-            f"{top} |")
+            f"{top} |"
+        )
     return "\n".join(linhas) + "\n"
 
 
@@ -97,17 +103,24 @@ def perfilar(trilho: str) -> pd.DataFrame:
     figs.mkdir(parents=True, exist_ok=True)
     linhas = []
     for coluna in pq.read_schema(caminho).names:
-        s = pd.read_parquet(caminho, columns=[coluna],
-                            dtype_backend="numpy_nullable")[coluna]
+        s = pd.read_parquet(caminho, columns=[coluna], dtype_backend="numpy_nullable")[coluna]
         linha = perfil_serie(s)
         info = cat[coluna]
-        linha.update(categoria=info.categoria.value, verificar=info.verificar,
-                     justificativa=info.justificativa)
+        linha.update(
+            categoria=info.categoria.value,
+            verificar=info.verificar,
+            justificativa=info.justificativa,
+        )
         if linha["min"] is not None and info.categoria.value not in SEM_HISTOGRAMA:
             histograma(s, linha, figs / f"{nome_arquivo(coluna)}.png")
         if trilho == "A" and coluna == "lamost_subClass":
-            (s.value_counts(dropna=False).rename_axis("subclasse").rename("n")
-             .reset_index().to_csv(SAIDA / "trailA_subclasse.csv", index=False))
+            (
+                s.value_counts(dropna=False)
+                .rename_axis("subclasse")
+                .rename("n")
+                .reset_index()
+                .to_csv(SAIDA / "trailA_subclasse.csv", index=False)
+            )
         linhas.append(linha)
         del s
     p = pd.DataFrame(linhas)

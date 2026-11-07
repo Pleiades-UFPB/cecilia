@@ -8,12 +8,14 @@ from cecilia.limpeza.perfil import perfil_colunas, perfil_serie
 
 
 def _df():
-    return pd.DataFrame({
-        "ids": pd.array([1234567890123456789, None, 3, 4], dtype="Int64"),
-        "x": [1.0, 2.0, None, 4.0],
-        "classe": ["G2", "K5", "G2", None],
-        "flag": [True, False, True, True],
-    })
+    return pd.DataFrame(
+        {
+            "ids": pd.array([1234567890123456789, None, 3, 4], dtype="Int64"),
+            "x": [1.0, 2.0, None, 4.0],
+            "classe": ["G2", "K5", "G2", None],
+            "flag": [True, False, True, True],
+        }
+    )
 
 
 def test_uma_linha_por_coluna_na_ordem():

@@ -40,14 +40,20 @@ def test_proibidas_trilho_a_inclui_gspphot_e_rotulo():
 
 def test_proibidas_trilho_b_inclui_rotulo_e_relacoes_de_escala():
     proibidas = colunas_proibidas("B")
-    assert {"apokasc_EvolSt", "apokasc_Mass", "apokasc_Radius", "apokasc_loggSeis",
-            "apokasc_AgeCat"} <= proibidas
+    assert {
+        "apokasc_EvolSt",
+        "apokasc_Mass",
+        "apokasc_Radius",
+        "apokasc_loggSeis",
+        "apokasc_AgeCat",
+    } <= proibidas
 
 
 def test_features_candidatas_nao_sao_proibidas():
     for trilho in "AB":
-        assert not set(colunas_por_categoria(trilho, Categoria.FEATURE_CANDIDATA)) & \
-            colunas_proibidas(trilho)
+        assert not set(
+            colunas_por_categoria(trilho, Categoria.FEATURE_CANDIDATA)
+        ) & colunas_proibidas(trilho)
 
 
 def test_trilho_invalido():

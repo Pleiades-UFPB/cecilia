@@ -27,7 +27,11 @@ def perfil_serie(s: pd.Series) -> dict:
         "n_ausentes": n_ausentes,
         "frac_ausentes": n_ausentes / n if n else float("nan"),
         "n_distintos": int(s.nunique(dropna=True)),
-        "min": None, "p01": None, "p50": None, "p99": None, "max": None,
+        "min": None,
+        "p01": None,
+        "p50": None,
+        "p99": None,
+        "max": None,
         "top": None,
     }
     valores = s.dropna()
