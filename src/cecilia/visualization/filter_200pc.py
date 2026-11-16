@@ -1,6 +1,6 @@
 """Mantém só as estrelas a menos de 200 pc das tabelas cruzadas de data/interim/.
 
-    python scripts/filter_200pc.py          # roda depois de scripts/build_interim.py
+    uv run python -m cecilia.visualization.filter_200pc          # roda depois de build_interim
 
 Critério: parallax > 5 mas (distância = 1000 / parallax < 200 pc) e
 parallax_over_error >= 10. Com erro relativo de paralaxe abaixo de 10%, inverter a
@@ -20,7 +20,7 @@ import json
 
 import duckdb
 
-from build_interim import INTERIM, MANIFEST, ROOT, add_pandas_int64_metadata
+from cecilia.data_assembly.build_interim import INTERIM, MANIFEST, ROOT, add_pandas_int64_metadata
 
 MAX_PC = 200
 MIN_PARALLAX_OVER_ERROR = 10
@@ -38,13 +38,18 @@ def main() -> None:
                          WHERE {where}) TO '{tmp}' (FORMAT parquet, COMPRESSION zstd)""")
         tmp.replace(out)
         add_pandas_int64_metadata(out)
-        total, kept = con.execute(f"""SELECT (SELECT count(*) FROM read_parquet('{src}')),
-                                             (SELECT count(*) FROM read_parquet('{out}'))""").fetchone()
+        total, kept = con.execute(
+            f"""SELECT (SELECT count(*) FROM read_parquet('{src}')),
+                       (SELECT count(*) FROM read_parquet('{out}'))"""
+        ).fetchone()
         print(f"{out.name}: {kept:,} de {total:,} estrelas")
-        entry = {"file": str(out.relative_to(ROOT)), "from": str(src.relative_to(ROOT)),
-                 "step": f"distância < {MAX_PC} pc: {where}; dist_pc = 1000 / parallax",
-                 "date": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                 "rows": kept}
+        entry = {
+            "file": str(out.relative_to(ROOT)),
+            "from": str(src.relative_to(ROOT)),
+            "step": f"distância < {MAX_PC} pc: {where}; dist_pc = 1000 / parallax",
+            "date": dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "rows": kept,
+        }
         with MANIFEST.open("a") as f:
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
 

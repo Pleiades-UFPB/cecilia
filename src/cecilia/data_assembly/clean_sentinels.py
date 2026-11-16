@@ -1,6 +1,6 @@
 """Gera data/interim/ a partir de data/raw/, trocando valores sentinela por nulo.
 
-    python scripts/clean_sentinels.py
+    uv run python -m cecilia.data_assembly.clean_sentinels
 
 Só os sentinelas documentados nos ReadMe do VizieR são trocados; nenhuma linha é
 removida e nenhuma outra coluna muda. Os arquivos do Gaia/2MASS já usam nulos de verdade
@@ -22,7 +22,7 @@ import pyarrow as pa
 import pyarrow.compute as pc
 import pyarrow.parquet as pq
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]  # raiz do repositório
 RAW = ROOT / "data" / "raw"
 INTERIM = ROOT / "data" / "interim"
 MANIFEST = INTERIM / "MANIFEST.jsonl"
@@ -30,19 +30,24 @@ MANIFEST = INTERIM / "MANIFEST.jsonl"
 # arquivo -> {coluna: valor sentinela}
 SENTINELS = {
     "lamost_dr11_lrs.parquet": {
-        **{c: -9999 for c in ("snru", "snrg", "snrr", "snri", "snrz", "z", "e_z", "GaiaDR3", "Gmag")},
+        **{
+            c: -9999
+            for c in ("snru", "snrg", "snrr", "snri", "snrz", "z", "e_z", "GaiaDR3", "Gmag")
+        },
         **{c: -999 for c in ("gmag", "rmag", "imag", "zmag", "ymag")},  # Pan-STARRS
         "offsetsv": 99,
     },
     "apokasc3_table4.parquet": {
-        "[C/Fe]": -9999.99, "[N/Fe]": -9999.99,
-        "e_[C/Fe]": -999.99, "e_[N/Fe]": -999.99,
+        "[C/Fe]": -9999.99,
+        "[N/Fe]": -9999.99,
+        "e_[C/Fe]": -999.99,
+        "e_[N/Fe]": -999.99,
     },
 }
 
 
 def now_utc() -> str:
-    return dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def null_sentinels(table: pa.Table, sentinels: dict) -> tuple[pa.Table, dict]:
@@ -56,8 +61,9 @@ def null_sentinels(table: pa.Table, sentinels: dict) -> tuple[pa.Table, dict]:
             hit = pc.equal(arr, pa.scalar(int(value), arr.type))
         hit = pc.fill_null(hit, False)
         counts[col] = pc.sum(hit).as_py() or 0
-        table = table.set_column(table.schema.get_field_index(col), col,
-                                 pc.if_else(hit, pa.scalar(None, arr.type), arr))
+        table = table.set_column(
+            table.schema.get_field_index(col), col, pc.if_else(hit, pa.scalar(None, arr.type), arr)
+        )
     return table, counts
 
 
@@ -78,9 +84,15 @@ def clean(name: str, sentinels: dict) -> None:
     if pq.ParquetFile(tmp).metadata.num_rows != pf.metadata.num_rows:
         raise SystemExit(f"{name}: número de linhas mudou")
     tmp.rename(out)
-    entry = {"file": str(out.relative_to(ROOT)), "from": str(src.relative_to(ROOT)),
-             "step": "sentinelas -> nulo", "sentinels": sentinels, "nulled": totals,
-             "date": now_utc(), "rows": pf.metadata.num_rows}
+    entry = {
+        "file": str(out.relative_to(ROOT)),
+        "from": str(src.relative_to(ROOT)),
+        "step": "sentinelas -> nulo",
+        "sentinels": sentinels,
+        "nulled": totals,
+        "date": now_utc(),
+        "rows": pf.metadata.num_rows,
+    }
     with MANIFEST.open("a") as f:
         f.write(json.dumps(entry, ensure_ascii=False) + "\n")
     print(f"{name}: {pf.metadata.num_rows:,} linhas")

@@ -42,6 +42,8 @@ O DuckDB não diferencia maiúsculas de minúsculas em nomes de coluna. Quando d
 | `lamost_Gmag_1` | G do Gaia, copiado pelo LAMOST (`Gmag`) | g do Pan-STARRS (`gmag`), valor por valor |
 | `apokasc_e_AgeRGB_1`, `apokasc_e_AgeRC_1` | Incerteza inferior da idade (negativa, mínimo −43,9 no raw) | Repete `E_AgeRGB` / `E_AgeRC` (positiva) |
 
+> **Corrigido no plano 02-01 (2026-11-16).** O `build_interim.py` passou a selecionar as colunas pela posição no esquema e a renomear explicitamente os pares: `lamost_Gmag_1` virou `lamost_Gmag_gaia` (G do Gaia) e `apokasc_e_Age*_1` virou `apokasc_e_Age*_inf` (incerteza inferior). O interim foi regenerado. A tabela acima descreve o estado em que este perfil foi feito.
+
 **Impacto neste projeto:** nenhum direto. As três colunas já estavam fora: `phot_g_mean_mag` substitui a primeira, e as idades são proibidas no Trilho B. Mesmo assim, o arquivo interim está errado e precisa ser corrigido num plano da Fase 2. Fica registrado como concern no SUMMARY.
 
 ### 2. O rótulo do Trilho A precisa de mapeamento (03-02)
@@ -90,7 +92,7 @@ O DuckDB não diferencia maiúsculas de minúsculas em nomes de coluna. Quando d
 - Metadados de data e arquivo: `lamost_ObsDate`, `lamost_LMJD`, `lamost_MJD`, `j_date`, `lamost_fNFlux`, `lamost_n_spectra`.
 - Posições duplicadas: `tmass_ra`, `tmass_dec`, `lamost_RAdeg`, `lamost_DEdeg`, `lamost_RAOdeg`, `lamost_DEOdeg`.
 - Constante: `lamost_FiberType`.
-- Coluna com defeito: `lamost_Gmag_1`.
+- Coluna com defeito: `lamost_Gmag_1` (hoje `lamost_Gmag_gaia`, corrigida no 02-01; segue irrelevante por ser redundante com `phot_g_mean_mag`).
 - Velocidade radial: `radial_velocity`, `radial_velocity_error`.
 - Flags de disponibilidade: `has_xp_continuous`, `has_xp_sampled`, `has_rvs`.
 

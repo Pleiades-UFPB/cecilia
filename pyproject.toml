@@ -17,6 +17,7 @@ dependencies = [
     "shap",
     "matplotlib",
     "plotly",
+    "duckdb>=2.0.0",
 ]
 
 [dependency-groups]

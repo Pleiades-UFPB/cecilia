@@ -258,11 +258,11 @@ LAMOST = {
         "decisão aberta (como WISE). ~50–70% ausentes no LAMOST bruto.",
         verificar=True,
     ),
-    "lamost_Gmag_1": Coluna(
+    "lamost_Gmag_gaia": Coluna(
         X,
-        "DEFEITO do build_interim: deveria ser o G do Gaia copiado "
-        "pelo LAMOST, mas contém o g do Pan-STARRS (colisão gmag/Gmag no "
-        "DuckDB, que não diferencia maiúsculas). Usar phot_g_mean_mag.",
+        "G do Gaia DR3 copiado pelo LAMOST (Gmag no ReadMe V/162; renomeada no "
+        "build_interim para não colidir com gmag do Pan-STARRS): redundante com "
+        "phot_g_mean_mag, que é a fonte primária.",
     ),
     "lamost_FiberType": Coluna(X, "Constante 'Obj' no Trilho A (filtro do build_interim)."),
     "lamost_offsets": Coluna(
@@ -372,10 +372,10 @@ APOKASC = {
         "Idade Garstec calculada para RGB ou para RC. " + _EVOL,
     ),
     **_mesma(
-        ["apokasc_e_AgeRGB_1", "apokasc_e_AgeRC_1"],
+        ["apokasc_e_AgeRGB_inf", "apokasc_e_AgeRC_inf"],
         B,
-        "DEFEITO do build_interim: deveria ser a incerteza inferior (negativa) da idade, "
-        "mas repete E_Age* (colisão e_/E_ no DuckDB, que não diferencia maiúsculas). " + _EVOL,
+        "Incerteza inferior (negativa) da idade Garstec, e_AgeRGB/e_AgeRC no VizieR "
+        "(renomeada no build_interim para não colidir com E_Age*). " + _EVOL,
     ),
     "apokasc_vsini": Coluna(
         F, "Rotação projetada (APOGEE); faixa inclui valores negativos.", verificar=True
