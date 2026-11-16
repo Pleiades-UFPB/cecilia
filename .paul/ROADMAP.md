@@ -27,7 +27,7 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 |-------|------|-------|--------|-----------|
 | 1 | Fundação | 1/3 | In progress | - |
 | 2 | Aquisição de dados | TBD | Not started | - |
-| 3 | Limpeza e features | TBD | Not started | - |
+| 3 | Limpeza e features | 1/3 | In progress | - |
 | 4 | Classificação espectral (Trilho A) | TBD | Not started | - |
 | 5 | Asterossismologia (Trilho B) | TBD | Not started | - |
 | 6 | Análise | TBD | Not started | - |
@@ -79,7 +79,10 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 - Partição treino/validação/teste com semente fixa, salva em disco
 - Verificação automatizada anti-vazamento
 
-**Plans:** TBD (defined during /paul:plan)
+**Plans:**
+- [x] 03-01: Perfil de valores e triagem de colunas (Trilhos A e B)
+- [ ] 03-02: Cortes, features, ausentes e partição — Trilho A
+- [ ] 03-03: Cortes, features, ausentes e partição — Trilho B
 
 ### Phase 4: Classificação espectral (Trilho A)
 
