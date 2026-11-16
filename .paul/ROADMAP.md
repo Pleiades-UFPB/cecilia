@@ -26,7 +26,7 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 | Phase | Name | Plans | Status | Completed |
 |-------|------|-------|--------|-----------|
 | 1 | Fundação | 1/3 | In progress | - |
-| 2 | Aquisição de dados | TBD | Not started | - |
+| 2 | Aquisição de dados | 1/2 | In progress | - |
 | 3 | Limpeza e features | 1/3 | In progress | - |
 | 4 | Classificação espectral (Trilho A) | TBD | Not started | - |
 | 5 | Asterossismologia (Trilho B) | TBD | Not started | - |
@@ -64,7 +64,9 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 - Trilho B: catálogo APOKASC-3
 - Manifesto em `data/README.md`; agradecimentos de cada fonte no README
 
-**Plans:** TBD (defined during /paul:plan)
+**Plans:**
+- [x] 02-01: Regularizar aquisição (colisão de nomes no DuckDB, ROOT, duckdb, lint, manifesto)
+- [ ] 02-02: Relatório do cross-match do Trilho A (AC-02.3)
 
 ### Phase 3: Limpeza e features
 
@@ -149,4 +151,4 @@ Os dois trilhos compartilham as fases 01, 03 e 06. Fases 04 e 05 podem correr em
 
 ---
 *Roadmap created: 2026-10-04*
-*Last updated: 2026-10-04*
+*Last updated: 2026-11-16*

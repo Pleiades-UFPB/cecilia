@@ -1,6 +1,8 @@
 """Gaia DR3 ao lado da foto de referência das Plêiades, no mesmo enquadramento.
 
-    python scripts/plot_pleiades_vs_photo.py # roda depois de scripts/plot_pleiades_photo.py
+    uv run python -m cecilia.visualization.plot_pleiades_vs_photo
+
+Roda depois de plot_pleiades_photo.
 
 Foto de referência: figures/referencia/pleiades_foto.webp (800 x 531 px), enviada pelo
 usuário, sem créditos/metadados de origem.
@@ -25,9 +27,9 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 
-from plot_pleiades_photo import CONE_RAW, G_LIMIT, draw, tangent_plane
+from cecilia.visualization.plot_pleiades_photo import CONE_RAW, G_LIMIT, draw, tangent_plane
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]  # raiz do repositório
 PHOTO = ROOT / "figures" / "referencia" / "pleiades_foto.webp"
 OUT = ROOT / "figures" / "pleiades_gaia_vs_foto.png"
 
@@ -47,19 +49,32 @@ def main() -> None:
     fig, (a, b) = plt.subplots(1, 2, figsize=(16, 16 / 2 * h / w + 0.9), facecolor="black")
     draw(a, d, "", center=ALCYONE, half=half)
     b.imshow(np.asarray(photo), extent=(half[0], -half[0], -half[1], half[1]))
-    b.set_xlim(half[0], -half[0]); b.set_ylim(-half[1], half[1])
-    b.set_xticks([]); b.set_yticks([])
+    b.set_xlim(half[0], -half[0])
+    b.set_ylim(-half[1], half[1])
+    b.set_xticks([])
+    b.set_yticks([])
     for s in b.spines.values():
         s.set_visible(False)
 
     label = dict(color="#e6e6e6", fontsize=11, va="top", ha="left")
-    a.text(0.015, 0.975, f"Gaia DR3: {len(d):,} estrelas com G < {G_LIMIT}".replace(",", "."),
-           transform=a.transAxes, **label)
+    a.text(
+        0.015,
+        0.975,
+        f"Gaia DR3: {len(d):,} estrelas com G < {G_LIMIT}".replace(",", "."),
+        transform=a.transAxes,
+        **label,
+    )
     b.text(0.015, 0.975, "Foto de referência", transform=b.transAxes, **label)
-    fig.text(0.5, 0.02, f"Mesmo enquadramento: {2 * half[0]:.2f}° × {2 * half[1]:.2f}° centrado em "
-             f"Alcyone; norte para cima, leste à esquerda. A nebulosa da foto é poeira "
-             "iluminada e não está no catálogo.".replace(".", ",", 2),
-             color="#9a9a9a", fontsize=9, ha="center")
+    fig.text(
+        0.5,
+        0.02,
+        f"Mesmo enquadramento: {2 * half[0]:.2f}° × {2 * half[1]:.2f}° centrado em "
+        f"Alcyone; norte para cima, leste à esquerda. A nebulosa da foto é poeira "
+        "iluminada e não está no catálogo.".replace(".", ",", 2),
+        color="#9a9a9a",
+        fontsize=9,
+        ha="center",
+    )
     fig.subplots_adjust(left=0.005, right=0.995, top=0.995, bottom=0.06, wspace=0.01)
     OUT.parent.mkdir(exist_ok=True)
     fig.savefig(OUT, dpi=160, facecolor="black")

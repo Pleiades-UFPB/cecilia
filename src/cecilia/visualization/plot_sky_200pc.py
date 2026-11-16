@@ -1,6 +1,6 @@
 """Mapa do céu em coordenadas galácticas das estrelas a menos de 200 pc.
 
-    python scripts/plot_sky_200pc.py         # roda depois de scripts/filter_200pc.py
+    uv run python -m cecilia.visualization.plot_sky_200pc         # roda depois de filter_200pc
 
 Projeção Mollweide (área igual), convenção astronômica: centro galáctico (l = 0°) no
 meio, l crescendo para a esquerda. Trilho A aparece como densidade (estrelas por grau
@@ -24,7 +24,7 @@ import pandas as pd
 from matplotlib.colors import LinearSegmentedColormap, LogNorm
 from matplotlib.lines import Line2D
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]  # raiz do repositório
 INTERIM = ROOT / "data" / "interim"
 OUT = ROOT / "figures" / "sky_galactic_200pc.png"
 
@@ -55,11 +55,18 @@ def main() -> None:
     fig = plt.figure(figsize=(11, 6.2), facecolor=SURFACE)
     ax = fig.add_subplot(projection="mollweide", facecolor=SURFACE)
     cmap = LinearSegmentedColormap.from_list("azul", BLUE_RAMP)
-    mesh = ax.pcolormesh(x_edges, b_edges, density, cmap=cmap,
-                         norm=LogNorm(vmin=density.min(), vmax=density.max()),
-                         shading="flat", rasterized=True)
-    ax.scatter(to_x(b.l), np.radians(b.b), s=30, color=ORANGE, edgecolor=SURFACE,
-               linewidth=1.2, zorder=3)
+    mesh = ax.pcolormesh(
+        x_edges,
+        b_edges,
+        density,
+        cmap=cmap,
+        norm=LogNorm(vmin=density.min(), vmax=density.max()),
+        shading="flat",
+        rasterized=True,
+    )
+    ax.scatter(
+        to_x(b.l), np.radians(b.b), s=30, color=ORANGE, edgecolor=SURFACE, linewidth=1.2, zorder=3
+    )
 
     # Grade e eixos recessivos; rótulos de l na convenção astronômica.
     ax.grid(color=GRID, linewidth=0.6)
@@ -67,28 +74,58 @@ def main() -> None:
     ax.set_xticks(np.radians(ticks))
     # contorno da cor da superfície para os rótulos de l continuarem legíveis sobre os dados
     halo = [pe.withStroke(linewidth=2.5, foreground=SURFACE)]
-    ax.set_xticklabels([f"{int((-t) % 360)}°" for t in ticks], color=INK_2, fontsize=8,
-                       path_effects=halo)
+    ax.set_xticklabels(
+        [f"{int((-t) % 360)}°" for t in ticks], color=INK_2, fontsize=8, path_effects=halo
+    )
     ax.tick_params(axis="y", colors=MUTED, labelsize=8)
     ax.set_xlabel("longitude galáctica l", color=INK_2, fontsize=9)
     ax.set_ylabel("latitude galáctica b", color=INK_2, fontsize=9)
     for s in ax.spines.values():
         s.set_edgecolor("#c3c2b7")
 
-    ax.set_title(f"Estrelas a menos de 200 pc em coordenadas galácticas\n"
-                 f"{len(a):,} do Trilho A (LAMOST) e {len(b)} do Trilho B (APOKASC-3)"
-                 .replace(",", "."), color=INK, fontsize=12, pad=38)
+    ax.set_title(
+        f"Estrelas a menos de 200 pc em coordenadas galácticas\n"
+        f"{len(a):,} do Trilho A (LAMOST) e {len(b)} do Trilho B (APOKASC-3)".replace(",", "."),
+        color=INK,
+        fontsize=12,
+        pad=38,
+    )
 
-    legend = [Line2D([], [], marker="s", linestyle="", markersize=9, color=BLUE_RAMP[4],
-                     label="Trilho A — LAMOST (densidade)"),
-              Line2D([], [], marker="o", linestyle="", markersize=7, color=ORANGE,
-                     markeredgecolor=SURFACE, label="Trilho B — APOKASC-3 (cada estrela)")]
-    leg = ax.legend(handles=legend, loc="lower center", bbox_to_anchor=(0.5, 1.0),
-                    frameon=False, fontsize=9, labelcolor=INK_2, ncol=2)
+    legend = [
+        Line2D(
+            [],
+            [],
+            marker="s",
+            linestyle="",
+            markersize=9,
+            color=BLUE_RAMP[4],
+            label="Trilho A — LAMOST (densidade)",
+        ),
+        Line2D(
+            [],
+            [],
+            marker="o",
+            linestyle="",
+            markersize=7,
+            color=ORANGE,
+            markeredgecolor=SURFACE,
+            label="Trilho B — APOKASC-3 (cada estrela)",
+        ),
+    ]
+    leg = ax.legend(
+        handles=legend,
+        loc="lower center",
+        bbox_to_anchor=(0.5, 1.0),
+        frameon=False,
+        fontsize=9,
+        labelcolor=INK_2,
+        ncol=2,
+    )
     leg.set_zorder(5)
 
-    cb = fig.colorbar(mesh, ax=ax, orientation="horizontal", fraction=0.04, pad=0.1,
-                      shrink=0.45, anchor=(0.5, 1))
+    cb = fig.colorbar(
+        mesh, ax=ax, orientation="horizontal", fraction=0.04, pad=0.1, shrink=0.45, anchor=(0.5, 1)
+    )
     cb.set_label("estrelas do Trilho A por grau quadrado", color=INK_2, fontsize=9)
     cb.ax.tick_params(colors=MUTED, labelsize=8)
     cb.outline.set_visible(False)

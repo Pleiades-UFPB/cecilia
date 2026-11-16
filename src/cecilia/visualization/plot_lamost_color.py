@@ -1,6 +1,6 @@
 """Diagramas cor-magnitude e cor-cor do catálogo LAMOST com a fotometria Pan-STARRS.
 
-    python scripts/plot_lamost_color.py      # roda depois de scripts/clean_sentinels.py
+    uv run python -m cecilia.visualization.plot_lamost_color      # roda depois de clean_sentinels
 
 Amostra: data/interim/lamost_dr11_lrs.parquet, todas as classes (STAR, GALAXY, QSO),
 FiberType == 'Obj', com gmag, rmag e imag do Pan-STARRS. Um espectro por objeto (uID):
@@ -30,13 +30,21 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap, LogNorm
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]  # raiz do repositório
 SRC = ROOT / "data" / "interim" / "lamost_dr11_lrs.parquet"
 FIG = ROOT / "figures"
 
-SURFACE, INK, INK_2, MUTED, GRID, AXIS = "#fcfcfb", "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
+SURFACE, INK, INK_2, MUTED, GRID, AXIS = (
+    "#fcfcfb",
+    "#0b0b0b",
+    "#52514e",
+    "#898781",
+    "#e1e0d9",
+    "#c3c2b7",
+)
 BLUE = LinearSegmentedColormap.from_list(
-    "azul", ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b"])
+    "azul", ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b"]
+)
 GRAY = LinearSegmentedColormap.from_list("cinza", ["#efeee9", "#c9c7bf"])
 
 # tipo espectral a partir de subClass (ordem de temperatura, da mais quente para a mais fria)
@@ -53,10 +61,24 @@ TYPE_SQL = """CASE
     ELSE 'outros' END"""
 
 DIAGRAMS = {
-    "cor_magnitude": dict(x="gr", y="gmag", xlabel="g − r (mag)", ylabel="g (mag, Pan-STARRS)",
-                          xlim=(-0.8, 2.2), ylim=(23, 10.5), title="Diagrama cor-magnitude aparente"),
-    "cor_cor": dict(x="gr", y="ri", xlabel="g − r (mag)", ylabel="r − i (mag)",
-                    xlim=(-0.8, 2.2), ylim=(-0.7, 2.5), title="Diagrama cor-cor"),
+    "cor_magnitude": dict(
+        x="gr",
+        y="gmag",
+        xlabel="g − r (mag)",
+        ylabel="g (mag, Pan-STARRS)",
+        xlim=(-0.8, 2.2),
+        ylim=(23, 10.5),
+        title="Diagrama cor-magnitude aparente",
+    ),
+    "cor_cor": dict(
+        x="gr",
+        y="ri",
+        xlabel="g − r (mag)",
+        ylabel="r − i (mag)",
+        xlim=(-0.8, 2.2),
+        ylim=(-0.7, 2.5),
+        title="Diagrama cor-cor",
+    ),
 }
 NBINS = 220
 
@@ -66,7 +88,8 @@ def load() -> dict:
     con.execute("SET memory_limit = '3GB'; SET threads = 4")
     q = f"""
     SELECT Class, {TYPE_SQL} AS sptype, gmag - rmag AS gr, rmag - imag AS ri, gmag
-    FROM (SELECT *, row_number() OVER (PARTITION BY uID ORDER BY snrg DESC NULLS LAST, ObsID DESC) AS k
+    FROM (SELECT *, row_number() OVER (PARTITION BY uID
+                                       ORDER BY snrg DESC NULLS LAST, ObsID DESC) AS k
           FROM read_parquet('{SRC}')
           WHERE FiberType = 'Obj' AND gmag IS NOT NULL AND rmag IS NOT NULL AND imag IS NOT NULL)
     WHERE k = 1"""
@@ -80,15 +103,25 @@ def density(ax, x, y, cfg, cmap, alpha=1.0):
     h = np.ma.masked_equal(h.T, 0)
     if h.count() == 0:
         return None
-    return ax.pcolormesh(xb, yb, h, cmap=cmap, norm=LogNorm(vmin=1, vmax=max(h.max(), 2)),
-                         alpha=alpha, rasterized=True, shading="flat")
+    return ax.pcolormesh(
+        xb,
+        yb,
+        h,
+        cmap=cmap,
+        norm=LogNorm(vmin=1, vmax=max(h.max(), 2)),
+        alpha=alpha,
+        rasterized=True,
+        shading="flat",
+    )
 
 
 def style(ax, cfg, title, n, first_col, last_row):
     ax.set_facecolor(SURFACE)
-    ax.set_xlim(*cfg["xlim"]); ax.set_ylim(*cfg["ylim"])
+    ax.set_xlim(*cfg["xlim"])
+    ax.set_ylim(*cfg["ylim"])
     ax.set_title(f"{title}  ({n:,})".replace(",", "."), color=INK, fontsize=10, loc="left")
-    ax.grid(color=GRID, linewidth=0.5); ax.set_axisbelow(True)
+    ax.grid(color=GRID, linewidth=0.5)
+    ax.set_axisbelow(True)
     ax.tick_params(colors=MUTED, labelsize=7.5)
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
@@ -112,13 +145,22 @@ def plot(d: dict, key: str, cfg: dict) -> None:
         m = cls == c
         mesh = density(ax, x[m], y[m], cfg, BLUE) or mesh
         style(ax, cfg, c, int(m.sum()), j == 0, False)
-    note = fig.add_subplot(gs[0, 3]); note.axis("off")
+    note = fig.add_subplot(gs[0, 3])
+    note.axis("off")
     note.text(0, 0.95, "Como ler", color=INK, fontsize=10, va="top", weight="bold")
-    note.text(0, 0.82, "Cada painel é um histograma 2D:\na cor mostra quantos objetos\n"
-              "caem em cada célula (escala log;\nazul escuro = mais objetos).\n\n"
-              "Linha 1: por classe LAMOST.\nLinhas 2-3: estrelas por tipo\nespectral (azul) sobre todas as\n"
-              "estrelas (cinza).\n\nUm espectro por objeto (uID).\nPan-STARRS satura em g ≲ 14.",
-              color=INK_2, fontsize=8.8, va="top", linespacing=1.35)
+    note.text(
+        0,
+        0.82,
+        "Cada painel é um histograma 2D:\na cor mostra quantos objetos\n"
+        "caem em cada célula (escala log;\nazul escuro = mais objetos).\n\n"
+        "Linha 1: por classe LAMOST.\nLinhas 2-3: estrelas por tipo\n"
+        "espectral (azul) sobre todas as\n"
+        "estrelas (cinza).\n\nUm espectro por objeto (uID).\nPan-STARRS satura em g ≲ 14.",
+        color=INK_2,
+        fontsize=8.8,
+        va="top",
+        linespacing=1.35,
+    )
 
     star = cls == "STAR"
     for i, t in enumerate(TYPES):
@@ -128,20 +170,41 @@ def plot(d: dict, key: str, cfg: dict) -> None:
         density(ax, x[m], y[m], cfg, BLUE)
         style(ax, cfg, f"tipo {t}", int(m.sum()), i % 4 == 0, i >= 4)
         if not m.any():
-            ax.text(0.5, 0.5, "nenhuma estrela deste tipo\ncom g, r e i do Pan-STARRS", ha="center",
-                    va="center", transform=ax.transAxes, color=INK_2, fontsize=9)
+            ax.text(
+                0.5,
+                0.5,
+                "nenhuma estrela deste tipo\ncom g, r e i do Pan-STARRS",
+                ha="center",
+                va="center",
+                transform=ax.transAxes,
+                color=INK_2,
+                fontsize=9,
+            )
 
     n_other = int((star & (typ == "outros")).sum())
-    fig.suptitle(f"LAMOST DR11 LRS — {cfg['title']} com fotometria Pan-STARRS", color=INK,
-                 fontsize=14, x=0.065, ha="left", y=0.955)
+    fig.suptitle(
+        f"LAMOST DR11 LRS — {cfg['title']} com fotometria Pan-STARRS",
+        color=INK,
+        fontsize=14,
+        x=0.065,
+        ha="left",
+        y=0.955,
+    )
     n_other_txt = f"{n_other:,}".replace(",", ".")
-    fig.text(0.065, 0.025, f"Estrelas fora de O-M/WD (DoubleStar, Carbon, CV, EM…): {n_other_txt} "
-             "— aparecem só no cinza.", color=MUTED, fontsize=8.5)
+    fig.text(
+        0.065,
+        0.025,
+        f"Estrelas fora de O-M/WD (DoubleStar, Carbon, CV, EM…): {n_other_txt} "
+        "— aparecem só no cinza.",
+        color=MUTED,
+        fontsize=8.5,
+    )
     if mesh is not None:
         cax = note.inset_axes([0, -0.02, 0.85, 0.045])  # abaixo do texto, dentro do painel de notas
         cb = fig.colorbar(mesh, cax=cax, orientation="horizontal")
         cb.set_label("objetos por célula (painel da linha 1)", color=INK_2, fontsize=8)
-        cb.ax.tick_params(colors=MUTED, labelsize=7); cb.outline.set_visible(False)
+        cb.ax.tick_params(colors=MUTED, labelsize=7)
+        cb.outline.set_visible(False)
     out = FIG / f"lamost_{key}.png"
     fig.savefig(out, dpi=150, facecolor=SURFACE, bbox_inches="tight")
     plt.close(fig)
@@ -151,8 +214,10 @@ def plot(d: dict, key: str, cfg: dict) -> None:
 def main() -> None:
     d = load()
     FIG.mkdir(exist_ok=True)
-    print({c: int((d["Class"] == c).sum()) for c in ("STAR", "GALAXY", "QSO")},
-          {t: int(((d["Class"] == "STAR") & (d["sptype"] == t)).sum()) for t in TYPES + ["outros"]})
+    print(
+        {c: int((d["Class"] == c).sum()) for c in ("STAR", "GALAXY", "QSO")},
+        {t: int(((d["Class"] == "STAR") & (d["sptype"] == t)).sum()) for t in TYPES + ["outros"]},
+    )
     for key, cfg in DIAGRAMS.items():
         plot(d, key, cfg)
 
